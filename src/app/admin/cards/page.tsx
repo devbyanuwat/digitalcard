@@ -34,7 +34,7 @@ export default async function AdminCards() {
             </thead>
             <tbody>
               {cards.map((c) => (
-                <tr key={c.id} className="border-b border-border last:border-0">
+                <tr key={c.id} className="border-b border-border transition-colors last:border-0 hover:bg-secondary/40">
                   <td className="px-4 py-3">
                     <div className="font-medium">{c.title ?? "Untitled"}</div>
                     <a href={`/c/${c.slug}`} className="font-mono text-xs text-brand hover:underline">

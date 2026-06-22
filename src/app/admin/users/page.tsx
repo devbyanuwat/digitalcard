@@ -27,7 +27,7 @@ export default async function AdminUsers() {
           </thead>
           <tbody>
             {users?.map((u) => (
-              <tr key={u.id} className="border-b border-border last:border-0">
+              <tr key={u.id} className="border-b border-border transition-colors last:border-0 hover:bg-secondary/40">
                 <td className="px-4 py-3">
                   <div className="font-medium">{u.display_name ?? "—"}</div>
                   <div className="text-xs text-fg-subtle">{u.email}</div>

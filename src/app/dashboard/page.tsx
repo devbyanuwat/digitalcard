@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BarChart3, Eye, LogOut, Plus, SquarePen } from "lucide-react";
 import { getProfile, getUser, requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { getTheme, defaultTheme } from "@/lib/card/themes";
 import { signOut } from "../login/actions";
 import { deleteOwnCard, newCard, togglePublishOwn } from "./actions";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,7 @@ export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: cards } = await supabase
     .from("cards")
-    .select("id, slug, title, published, views, updated_at")
+    .select("id, slug, title, published, views, updated_at, theme_id")
     .eq("owner_id", user!.id)
     .order("updated_at", { ascending: false });
 
@@ -66,7 +67,14 @@ export default async function DashboardPage() {
             {cards.map((card) => (
               <div key={card.id} className="flex flex-col rounded-xl border border-border bg-card p-4">
                 <div className="flex items-start justify-between gap-3">
-                  <h2 className="font-medium tracking-tight">{card.title || "Untitled"}</h2>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="size-2.5 shrink-0 rounded-full"
+                      style={{ background: (getTheme(card.theme_id) ?? defaultTheme).colors.accent }}
+                      aria-hidden="true"
+                    />
+                    <h2 className="font-medium tracking-tight">{card.title || "Untitled"}</h2>
+                  </div>
                   <span
                     className={
                       "shrink-0 rounded-full border px-2 py-0.5 text-xs " +

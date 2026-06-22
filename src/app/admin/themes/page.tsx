@@ -31,7 +31,7 @@ export default async function AdminThemes() {
           </thead>
           <tbody>
             {themes?.map((t) => (
-              <tr key={t.id} className="border-b border-border last:border-0">
+              <tr key={t.id} className="border-b border-border transition-colors last:border-0 hover:bg-secondary/40">
                 <td className="px-4 py-3">
                   <div className="font-medium">{t.name}</div>
                   <div className="font-mono text-xs text-fg-subtle">{t.id}</div>
