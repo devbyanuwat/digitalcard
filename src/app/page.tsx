@@ -264,8 +264,9 @@ export default async function Home() {
           </section>
 
           {/* ---- themes showcase ---- */}
-          <section id="themes" className="border-t border-border bg-secondary/30 py-20">
-            <div className="mx-auto max-w-6xl px-6">
+          <section id="themes" className="relative isolate overflow-hidden border-t border-border bg-secondary/30 py-20">
+            <InteractiveGrid />
+            <div className="relative z-10 mx-auto max-w-6xl px-6">
               <h2 className="text-3xl font-semibold tracking-tight">Themes are just data</h2>
               <p className="mt-3 max-w-2xl text-muted-foreground">
                 One rendering engine reads a small theme object — so the same card looks right in
@@ -310,8 +311,9 @@ export default async function Home() {
           </section>
 
           {/* ---- how it works ---- */}
-          <section className="border-t border-border bg-secondary/30 py-20">
-            <div className="mx-auto max-w-6xl px-6">
+          <section className="relative isolate overflow-hidden border-t border-border bg-secondary/30 py-20">
+            <InteractiveGrid />
+            <div className="relative z-10 mx-auto max-w-6xl px-6">
               <h2 className="text-3xl font-semibold tracking-tight">How it works</h2>
               <ol className="mt-10 grid gap-8 md:grid-cols-3">
                 {STEPS.map((s, i) => (
@@ -372,20 +374,25 @@ export default async function Home() {
           </section>
 
           {/* ---- CTA band ---- */}
-          <section className="mx-auto max-w-6xl px-6 py-24 text-center">
-            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-              Ready to build your card?
-            </h2>
-            <p className="mx-auto mt-3 max-w-md text-muted-foreground">
-              Open the editor and have a shareable card in minutes. Free and open source.
-            </p>
-            <Link
-              href="/edit"
-              className="mt-8 inline-flex h-11 items-center gap-2 rounded-md bg-brand px-6 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand-hover"
-            >
-              Build your card
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+          <section className="mx-auto max-w-6xl px-6 py-20">
+            <div className="relative isolate overflow-hidden rounded-3xl border border-border bg-secondary/40 px-6 py-20 text-center">
+              <InteractiveGrid />
+              <div className="relative z-10">
+                <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+                  Ready to build your card?
+                </h2>
+                <p className="mx-auto mt-3 max-w-md text-muted-foreground">
+                  Open the editor and have a shareable card in minutes. Free and open source.
+                </p>
+                <Link
+                  href="/edit"
+                  className="mt-8 inline-flex h-11 items-center gap-2 rounded-md bg-brand px-6 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand-hover"
+                >
+                  Build your card
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
           </section>
         </main>
 
