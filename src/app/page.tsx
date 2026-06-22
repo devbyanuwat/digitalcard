@@ -2,11 +2,12 @@ import Link from "next/link";
 import { ArrowRight, Boxes, Check, Layers, Minus, Palette, QrCode } from "lucide-react";
 import { CardRenderer } from "@/components/card/CardRenderer";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { getThemes, getTheme, defaultTheme } from "@/lib/card/themes";
+import { getThemes } from "@/lib/card/themes";
 import { collectFontHrefs } from "@/lib/card/theme-engine";
 import { sampleCard } from "@/lib/card/sample";
 import { site, socialProfiles } from "@/lib/site";
 import { getUser } from "@/lib/auth";
+import { ThemeCycler } from "@/components/ThemeCycler";
 
 /* ---------------------------------------------------------------- content */
 
@@ -133,7 +134,6 @@ function jsonLd() {
 export default async function Home() {
   const themes = getThemes("oss");
   const fontHrefs = collectFontHrefs(themes);
-  const heroTheme = getTheme("minimal") ?? defaultTheme;
   const user = await getUser();
 
   return (
@@ -193,48 +193,53 @@ export default async function Home() {
 
         <main>
           {/* ---- hero ---- */}
-          <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-[1.1fr_1fr] lg:py-28">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-wider text-brand">
-                Open source · self-host or hosted
-              </p>
-              <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">
-                Your digital business card, built your way.
-              </h1>
-              <p className="mt-5 max-w-xl text-lg text-muted-foreground">
-                <strong className="font-medium text-foreground">digitalcard</strong> is a free,
-                open-source builder for digital business cards. Compose your card from blocks, pick a
-                theme, and share it by QR code or link — no sign-up to start.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link
-                  href="/edit"
-                  className="inline-flex h-11 items-center gap-2 rounded-md bg-brand px-5 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand-hover"
-                >
-                  Build your card
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <a
-                  href={site.github}
-                  className="inline-flex h-11 items-center gap-2 rounded-md border border-border px-5 text-sm font-medium transition-colors hover:bg-secondary"
-                >
-                  <GithubMark className="h-4 w-4" />
-                  View source
-                </a>
+          <section className="border-b border-border">
+            <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-[1.05fr_1fr] lg:py-28">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  <span className="size-1.5 rounded-full bg-brand" aria-hidden="true" />
+                  Open source · self-host or hosted
+                </span>
+                <h1 className="mt-6 text-5xl font-semibold leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
+                  One card.
+                  <br />
+                  <span className="text-brand">Every</span> look.
+                </h1>
+                <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+                  <strong className="font-medium text-foreground">digitalcard</strong> is a free,
+                  open-source builder for digital business cards. Compose from blocks, pick a theme,
+                  and share by QR or link — the same card, rendered any way you like.
+                </p>
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <Link
+                    href="/edit"
+                    className="inline-flex h-11 items-center gap-2 rounded-md bg-brand px-5 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand-hover"
+                  >
+                    Build your card
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <a
+                    href={site.github}
+                    className="inline-flex h-11 items-center gap-2 rounded-md border border-border px-5 text-sm font-medium transition-colors hover:bg-secondary"
+                  >
+                    <GithubMark className="h-4 w-4" />
+                    View source
+                  </a>
+                </div>
+                <p className="mt-4 text-sm text-fg-subtle">
+                  MIT licensed · works in your browser · no account needed
+                </p>
               </div>
-              <p className="mt-4 text-sm text-fg-subtle">
-                MIT licensed · works in your browser · no account needed
-              </p>
-            </div>
 
-            <div
-              className="flex justify-center rounded-2xl border border-border bg-secondary/40 p-10"
-              style={{
-                backgroundImage: "radial-gradient(var(--border) 1px, transparent 1px)",
-                backgroundSize: "18px 18px",
-              }}
-            >
-              <CardRenderer doc={sampleCard} theme={heroTheme} />
+              <div
+                className="rounded-2xl border border-border bg-secondary/40 px-8 py-6"
+                style={{
+                  backgroundImage: "radial-gradient(var(--border) 1px, transparent 1px)",
+                  backgroundSize: "18px 18px",
+                }}
+              >
+                <ThemeCycler />
+              </div>
             </div>
           </section>
 
