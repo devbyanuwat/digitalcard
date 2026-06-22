@@ -229,6 +229,24 @@ export default async function Home() {
                 <p className="mt-4 text-sm text-fg-subtle">
                   MIT licensed · works in your browser · no account needed
                 </p>
+
+                <dl className="mt-10 grid max-w-md grid-cols-3 divide-x divide-border overflow-hidden rounded-xl border border-border">
+                  {[
+                    { n: "10", l: "block types" },
+                    { n: "6", l: "themes" },
+                    { n: "3", l: "ways to share" },
+                  ].map((s) => (
+                    <div key={s.l} className="px-4 py-3.5">
+                      <dt className="sr-only">{s.l}</dt>
+                      <dd>
+                        <span className="block text-2xl font-semibold tabular-nums tracking-tight">
+                          {s.n}
+                        </span>
+                        <span className="text-xs text-muted-foreground">{s.l}</span>
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
 
               <div

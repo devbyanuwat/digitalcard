@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { CardRenderer } from "@/components/card/CardRenderer";
 import { getThemes } from "@/lib/card/themes";
 import { sampleCard } from "@/lib/card/sample";
+import { cn } from "@/lib/utils";
 
 const THEMES = getThemes("oss");
 
@@ -29,16 +30,28 @@ export function ThemeCycler() {
           <CardRenderer doc={sampleCard} theme={theme} />
         </div>
       </div>
-      <div className="flex items-center gap-2 text-sm" aria-live="polite">
-        <span
-          className="size-2 rounded-full transition-colors"
-          style={{ background: theme.colors.accent }}
-          aria-hidden="true"
-        />
-        <span className="font-medium">{theme.name}</span>
-        <span className="text-fg-subtle">
-          · {i + 1} / {THEMES.length} themes
-        </span>
+      <div className="flex flex-col items-center gap-2.5">
+        <div className="flex items-center gap-2">
+          {THEMES.map((t, idx) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setI(idx)}
+              aria-label={`Show ${t.name} theme`}
+              aria-pressed={idx === i}
+              className={cn(
+                "size-3 rounded-full transition-all",
+                idx === i
+                  ? "ring-2 ring-foreground/20 ring-offset-2 ring-offset-background"
+                  : "opacity-35 hover:opacity-100",
+              )}
+              style={{ background: t.colors.accent }}
+            />
+          ))}
+        </div>
+        <p className="text-sm text-muted-foreground" aria-live="polite">
+          <span className="font-medium text-foreground">{theme.name}</span> theme · same card
+        </p>
       </div>
     </div>
   );
