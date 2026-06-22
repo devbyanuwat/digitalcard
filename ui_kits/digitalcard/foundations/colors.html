@@ -1,0 +1,382 @@
+<!-- @dsCard group="Foundations" name="Color" viewport="1200x900" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>digitalcard — Color</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/preview.css">
+<style>
+  /* ---- Swatch grid ---- */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--space-md);
+  }
+  .swatch {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .swatch-chip {
+    height: 80px;
+    display: flex;
+    align-items: flex-end;
+    padding: var(--space-xs);
+  }
+  .swatch-chip--text {
+    height: 80px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--tracking-tight);
+  }
+  .swatch-meta {
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+  .swatch-meta .token-name {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg);
+    font-weight: var(--fw-medium);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .swatch-meta .role-label {
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+  }
+
+  /* ---- Contrast pairs ---- */
+  .contrast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-md);
+  }
+  .contrast-pair {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .contrast-swatch {
+    padding: var(--space-lg) var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .contrast-sample-text {
+    font-size: var(--text-h2);
+    font-weight: var(--fw-semibold);
+  }
+  .contrast-meta {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: var(--space-sm) var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+  .contrast-meta .pair-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-muted);
+  }
+  .contrast-badges {
+    display: flex;
+    gap: var(--space-2xs);
+  }
+
+  /* ---- Note ---- */
+  .ds-note {
+    padding: var(--space-md) var(--space-lg);
+    background: var(--accent-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    max-width: 72ch;
+    line-height: var(--lh-normal);
+  }
+  .ds-note strong {
+    color: var(--fg);
+    font-weight: var(--fw-semibold);
+  }
+</style>
+</head>
+<body>
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+</defs></svg>
+
+<div class="ds-themeswitch">
+  <button class="icon-btn" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark'">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <use href="#i-sun"/>
+    </svg>
+  </button>
+</div>
+
+<div class="ds-page">
+  <p class="ds-eyebrow">Foundations</p>
+  <h1 class="ds-title">Color</h1>
+  <p class="ds-lede">All chrome colors via CSS custom properties. Authored in OKLCH — neutrals tinted toward hue 278 (indigo) for subconscious cohesion. Semantic only: no raw hex in components.</p>
+
+  <!-- Swatch grid -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Chrome tokens</h2>
+      <span class="ds-meta">16 tokens — light + dark</span>
+    </div>
+    <div class="swatch-grid">
+
+      <!-- --bg -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--bg)"></div>
+        <div class="swatch-meta">
+          <span class="token-name">--bg</span>
+          <span class="role-label">App background</span>
+        </div>
+      </div>
+
+      <!-- --surface -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--surface)"></div>
+        <div class="swatch-meta">
+          <span class="token-name">--surface</span>
+          <span class="role-label">Panels, cards, popovers</span>
+        </div>
+      </div>
+
+      <!-- --surface-2 -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--surface-2)"></div>
+        <div class="swatch-meta">
+          <span class="token-name">--surface-2</span>
+          <span class="role-label">Inset wells, hover rows</span>
+        </div>
+      </div>
+
+      <!-- --fg -->
+      <div class="swatch">
+        <div class="swatch-chip--text" style="color:var(--fg)">
+          <span>Ag</span>
+        </div>
+        <div class="swatch-meta">
+          <span class="token-name">--fg</span>
+          <span class="role-label">Primary text</span>
+        </div>
+      </div>
+
+      <!-- --fg-muted -->
+      <div class="swatch">
+        <div class="swatch-chip--text" style="color:var(--fg-muted)">
+          <span>Ag</span>
+        </div>
+        <div class="swatch-meta">
+          <span class="token-name">--fg-muted</span>
+          <span class="role-label">Secondary text, captions</span>
+        </div>
+      </div>
+
+      <!-- --fg-subtle -->
+      <div class="swatch">
+        <div class="swatch-chip--text" style="color:var(--fg-subtle)">
+          <span>Ag</span>
+        </div>
+        <div class="swatch-meta">
+          <span class="token-name">--fg-subtle</span>
+          <span class="role-label">Placeholder, disabled</span>
+        </div>
+      </div>
+
+      <!-- --border -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--border)"></div>
+        <div class="swatch-meta">
+          <span class="token-name">--border</span>
+          <span class="role-label">Hairline dividers, inputs</span>
+        </div>
+      </div>
+
+      <!-- --border-strong -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--border-strong)"></div>
+        <div class="swatch-meta">
+          <span class="token-name">--border-strong</span>
+          <span class="role-label">Emphasized borders</span>
+        </div>
+      </div>
+
+      <!-- --primary -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--primary)"></div>
+        <div class="swatch-meta">
+          <span class="token-name">--primary</span>
+          <span class="role-label">Primary buttons, active nav</span>
+        </div>
+      </div>
+
+      <!-- --primary-fg -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--primary);display:flex;align-items:center;justify-content:center">
+          <span style="font-size:1.5rem;font-weight:700;color:var(--primary-fg)">Ag</span>
+        </div>
+        <div class="swatch-meta">
+          <span class="token-name">--primary-fg</span>
+          <span class="role-label">Text on primary</span>
+        </div>
+      </div>
+
+      <!-- --accent -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--accent)"></div>
+        <div class="swatch-meta">
+          <span class="token-name">--accent</span>
+          <span class="role-label">Brand, focus ring, selected</span>
+        </div>
+      </div>
+
+      <!-- --accent-fg -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--accent);display:flex;align-items:center;justify-content:center">
+          <span style="font-size:1.5rem;font-weight:700;color:var(--accent-fg)">Ag</span>
+        </div>
+        <div class="swatch-meta">
+          <span class="token-name">--accent-fg</span>
+          <span class="role-label">Text on accent</span>
+        </div>
+      </div>
+
+      <!-- --accent-subtle -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--accent-subtle)"></div>
+        <div class="swatch-meta">
+          <span class="token-name">--accent-subtle</span>
+          <span class="role-label">Accent tint backgrounds</span>
+        </div>
+      </div>
+
+      <!-- --success -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--success)"></div>
+        <div class="swatch-meta">
+          <span class="token-name">--success</span>
+          <span class="role-label">Saved, valid states</span>
+        </div>
+      </div>
+
+      <!-- --warning -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--warning)"></div>
+        <div class="swatch-meta">
+          <span class="token-name">--warning</span>
+          <span class="role-label">Low-contrast warnings</span>
+        </div>
+      </div>
+
+      <!-- --destructive -->
+      <div class="swatch">
+        <div class="swatch-chip" style="background:var(--destructive)"></div>
+        <div class="swatch-meta">
+          <span class="token-name">--destructive</span>
+          <span class="role-label">Delete, errors</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Contrast pairs -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Contrast pairs</h2>
+      <span class="ds-meta">WCAG AA target — chrome targets AA everywhere, AAA where cheap</span>
+    </div>
+    <div class="contrast-grid">
+
+      <!-- fg / surface -->
+      <div class="contrast-pair">
+        <div class="contrast-swatch" style="background:var(--surface)">
+          <span class="contrast-sample-text" style="color:var(--fg)">Primary text on surface</span>
+        </div>
+        <div class="contrast-meta">
+          <span class="pair-label">--fg / --surface</span>
+          <div class="contrast-badges">
+            <span class="badge badge--accent">~15.3:1</span>
+            <span class="badge badge--accent">AAA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- fg-muted / surface -->
+      <div class="contrast-pair">
+        <div class="contrast-swatch" style="background:var(--surface)">
+          <span class="contrast-sample-text" style="color:var(--fg-muted)">Muted text on surface</span>
+        </div>
+        <div class="contrast-meta">
+          <span class="pair-label">--fg-muted / --surface</span>
+          <div class="contrast-badges">
+            <span class="badge">~4.6:1</span>
+            <span class="badge">AA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- accent-fg / accent -->
+      <div class="contrast-pair">
+        <div class="contrast-swatch" style="background:var(--accent)">
+          <span class="contrast-sample-text" style="color:var(--accent-fg)">Label on accent</span>
+        </div>
+        <div class="contrast-meta">
+          <span class="pair-label">--accent-fg / --accent</span>
+          <div class="contrast-badges">
+            <span class="badge badge--accent">~5.1:1</span>
+            <span class="badge badge--accent">AA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- primary-fg / primary -->
+      <div class="contrast-pair">
+        <div class="contrast-swatch" style="background:var(--primary)">
+          <span class="contrast-sample-text" style="color:var(--primary-fg)">Label on primary</span>
+        </div>
+        <div class="contrast-meta">
+          <span class="pair-label">--primary-fg / --primary</span>
+          <div class="contrast-badges">
+            <span class="badge badge--accent">~16.1:1</span>
+            <span class="badge badge--accent">AAA</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="subtle" style="margin-top:var(--space-md);font-size:var(--text-caption)">Note: --fg-subtle (placeholder) does not meet AA at normal text sizes by design — it signals non-interactive state. The live contrast checker in the Style panel catches any user-customized card colors that drift below AA.</p>
+  </section>
+
+  <!-- Note -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Usage note</h2>
+    </div>
+    <p class="ds-note">
+      <strong>60-30-10 distribution.</strong> Background and surface tokens cover 60% of screen area (bg, surface, surface-2). Neutral foreground and border tokens cover 30% (fg, fg-muted, border, border-strong). Accent covers 10% — focus rings, selected states, the brand logo mark, and the Publish button. Restraint here is load-bearing: the card in the playground must always be the most colorful thing on screen.
+      <br><br>
+      <strong>Tinted neutrals.</strong> All neutral tokens carry ~0.006 chroma toward hue 278 (indigo) in OKLCH. The tint is invisible in isolation but creates subconscious cohesion with the accent — the chrome feels like it belongs to the same family without competing.
+    </p>
+  </section>
+</div>
+</body>
+</html>

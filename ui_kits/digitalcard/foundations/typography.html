@@ -1,0 +1,329 @@
+<!-- @dsCard group="Foundations" name="Typography" viewport="1200x900" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>digitalcard — Typography</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/preview.css">
+<style>
+  /* ---- Type scale table ---- */
+  .type-scale {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .type-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--border);
+  }
+  .type-row:last-child { border-bottom: 0; }
+  .type-row:nth-child(even) { background: var(--surface-2); }
+  .type-sample {
+    flex: 1;
+    min-width: 0;
+    word-break: break-word;
+  }
+  .type-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+    white-space: nowrap;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* ---- Weights ---- */
+  .weight-row {
+    display: flex;
+    gap: var(--space-xl);
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+  .weight-item { display: flex; flex-direction: column; gap: var(--space-2xs); }
+  .weight-sample {
+    font-size: var(--text-h2);
+    color: var(--fg);
+    line-height: 1.2;
+  }
+  .weight-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+  }
+
+  /* ---- Tabular nums demo ---- */
+  .tabnum-demo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+  }
+  .num-col {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .num-col-head {
+    padding: var(--space-xs) var(--space-md);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    font-size: var(--text-caption);
+    font-weight: var(--fw-medium);
+    color: var(--fg-muted);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+  .num-col-body { padding: var(--space-sm) var(--space-md); }
+  .num-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    font-size: var(--text-sm);
+    border-bottom: 1px solid var(--border);
+    gap: var(--space-md);
+  }
+  .num-line:last-child { border-bottom: 0; }
+  .num-line .num-val { text-align: right; }
+  .num-line .label-text { color: var(--fg-muted); }
+
+  /* ---- Mono sample ---- */
+  .mono-sample {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--accent);
+    letter-spacing: 0;
+  }
+
+  /* ---- Note ---- */
+  .ds-note {
+    padding: var(--space-md) var(--space-lg);
+    background: var(--accent-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    max-width: 72ch;
+    line-height: var(--lh-normal);
+  }
+  .ds-note strong { color: var(--fg); font-weight: var(--fw-semibold); }
+
+  .inline-badge {
+    display: inline-flex; align-items: center; gap: var(--space-2xs);
+    height: 18px; padding: 0 6px;
+    font-size: 10px; font-weight: var(--fw-medium);
+    font-family: var(--font-mono);
+    color: var(--accent); background: var(--accent-subtle);
+    border-radius: var(--radius-full);
+  }
+</style>
+</head>
+<body>
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+</defs></svg>
+
+<div class="ds-themeswitch">
+  <button class="icon-btn" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark'">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <use href="#i-sun"/>
+    </svg>
+  </button>
+</div>
+
+<div class="ds-page">
+  <p class="ds-eyebrow">Foundations</p>
+  <h1 class="ds-title">Typography</h1>
+  <p class="ds-lede">Geist — variable, single family, weight-driven hierarchy. 16px base, ~1.2-1.25 modular ratio. The builder is dense (Linear-style), so controls sit at 13-14px. Card fonts vary per theme and are loaded on demand.</p>
+
+  <!-- Type scale -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Type scale</h2>
+      <span class="ds-meta">8 roles — 12px to 30px</span>
+    </div>
+    <div class="type-scale">
+
+      <div class="type-row">
+        <span class="type-sample" style="font-size:var(--text-display);font-weight:var(--fw-bold);letter-spacing:var(--tracking-tight);line-height:var(--lh-tight)">Design systems that get out of the way</span>
+        <span class="type-meta">display · 1.875rem · 30px · 700 · lh 1.2</span>
+      </div>
+
+      <div class="type-row">
+        <span class="type-sample" style="font-size:var(--text-h1);font-weight:var(--fw-semibold);letter-spacing:var(--tracking-tight);line-height:1.25">Alex Rivera — Product Designer</span>
+        <span class="type-meta">h1 · 1.5rem · 24px · 600 · lh 1.25</span>
+      </div>
+
+      <div class="type-row">
+        <span class="type-sample" style="font-size:var(--text-h2);font-weight:var(--fw-semibold);letter-spacing:var(--tracking-snug);line-height:1.3">Theme catalog — 30+ designs</span>
+        <span class="type-meta">h2 · 1.25rem · 20px · 600 · lh 1.3</span>
+      </div>
+
+      <div class="type-row">
+        <span class="type-sample" style="font-size:var(--text-h3);font-weight:var(--fw-semibold);letter-spacing:var(--tracking-snug);line-height:1.4">Block settings</span>
+        <span class="type-meta">h3 · 1.125rem · 18px · 600 · lh 1.4</span>
+      </div>
+
+      <div class="type-row">
+        <span class="type-sample" style="font-size:var(--text-base);font-weight:var(--fw-regular);line-height:var(--lh-normal)">Designing calm tools that help people share who they are — one card at a time. Based in San Francisco.</span>
+        <span class="type-meta">body · 1rem · 16px · 400 · lh 1.5</span>
+      </div>
+
+      <div class="type-row">
+        <span class="type-sample" style="font-size:var(--text-sm);font-weight:var(--fw-regular);line-height:var(--lh-normal)">Save your contact details as a vCard — works with iOS, Android, and all major address books.</span>
+        <span class="type-meta">body-sm · 0.875rem · 14px · 400 · lh 1.5</span>
+      </div>
+
+      <div class="type-row">
+        <span class="type-sample" style="font-size:var(--text-ui);font-weight:var(--fw-medium);line-height:1.4">Add block · Publish · Save contact · Copy link</span>
+        <span class="type-meta">ui · 0.8125rem · 13px · 500 · lh 1.4</span>
+      </div>
+
+      <div class="type-row">
+        <span class="type-sample" style="font-size:var(--text-caption);font-weight:var(--fw-regular);line-height:1.4;color:var(--fg-muted)">Last saved 2 minutes ago · digitalcard.app/c/alex</span>
+        <span class="type-meta">caption · 0.75rem · 12px · 400 · lh 1.4</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Weights -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Weights</h2>
+      <span class="ds-meta">Geist variable — 4 steps used in chrome</span>
+    </div>
+    <div class="ds-stage">
+      <div class="weight-row">
+        <div class="weight-item">
+          <span class="weight-sample" style="font-weight:400">Product Designer</span>
+          <span class="weight-label">Regular · 400 · body, captions</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-weight:500">Lumen Labs</span>
+          <span class="weight-label">Medium · 500 · ui, labels, toggles</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-weight:600">Alex Rivera</span>
+          <span class="weight-label">Semibold · 600 · headings, block names</span>
+        </div>
+        <div class="weight-item">
+          <span class="weight-sample" style="font-weight:700">digitalcard</span>
+          <span class="weight-label">Bold · 700 · display, wordmark</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tabular nums -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Tabular numerals</h2>
+      <span class="ds-meta">.tabnum — font-variant-numeric: tabular-nums</span>
+    </div>
+    <div class="tabnum-demo">
+
+      <div class="num-col">
+        <div class="num-col-head">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><use href="#i-x"/></svg>
+          Without .tabnum — digits shift width
+        </div>
+        <div class="num-col-body">
+          <div class="num-line">
+            <span class="label-text">Profile views</span>
+            <span class="num-val" style="font-size:var(--text-sm)">1,111</span>
+          </div>
+          <div class="num-line">
+            <span class="label-text">Link clicks</span>
+            <span class="num-val" style="font-size:var(--text-sm)">7,777</span>
+          </div>
+          <div class="num-line">
+            <span class="label-text">QR scans</span>
+            <span class="num-val" style="font-size:var(--text-sm)">99,999</span>
+          </div>
+          <div class="num-line">
+            <span class="label-text">vCard saves</span>
+            <span class="num-val" style="font-size:var(--text-sm)">414</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="num-col">
+        <div class="num-col-head" style="color:var(--accent)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><use href="#i-check"/></svg>
+          With .tabnum — columns align cleanly
+        </div>
+        <div class="num-col-body">
+          <div class="num-line">
+            <span class="label-text">Profile views</span>
+            <span class="num-val tabnum" style="font-size:var(--text-sm)">1,111</span>
+          </div>
+          <div class="num-line">
+            <span class="label-text">Link clicks</span>
+            <span class="num-val tabnum" style="font-size:var(--text-sm)">7,777</span>
+          </div>
+          <div class="num-line">
+            <span class="label-text">QR scans</span>
+            <span class="num-val tabnum" style="font-size:var(--text-sm)">99,999</span>
+          </div>
+          <div class="num-line">
+            <span class="label-text">vCard saves</span>
+            <span class="num-val tabnum" style="font-size:var(--text-sm)">414</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Mono sample -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Monospace</h2>
+      <span class="ds-meta">Geist Mono — URLs, slugs, copy-link fields, code</span>
+    </div>
+    <div class="ds-stage">
+      <p class="ds-label">Card URL</p>
+      <code class="mono-sample">digitalcard.app/c/alex</code>
+      <p style="margin-top:var(--space-lg)" class="ds-label">Copy-link input</p>
+      <div style="max-width:360px">
+        <input class="input input--mono" type="text" value="digitalcard.app/c/alex" readonly>
+      </div>
+      <p style="margin-top:var(--space-lg)" class="ds-label">Slug field</p>
+      <div style="max-width:260px;display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden">
+        <span style="padding:0 var(--space-sm);height:34px;display:inline-flex;align-items:center;font-size:var(--text-sm);color:var(--fg-subtle);background:var(--surface-2);border-right:1px solid var(--border);white-space:nowrap">.app/c/</span>
+        <input class="input input--mono" type="text" value="alex" style="border:0;border-radius:0;flex:1">
+      </div>
+    </div>
+  </section>
+
+  <!-- Note -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Note</h2>
+    </div>
+    <p class="ds-note">
+      <strong>Chrome font = Geist, not Inter.</strong> Inter is the monoculture default for SaaS products. Geist is Vercel's own typeface — neutral, precise, and slightly more characterful at display sizes. It keeps the chrome calm while staying in family with Vercel-stack aesthetics. Card fonts are entirely separate: each theme specifies its own Google Font family, loaded on demand. Geist never appears on a published card unless a theme explicitly chooses it. That separation is intentional — the chrome fades into the background, and the card's typography does the expressive work.
+    </p>
+  </section>
+</div>
+</body>
+</html>

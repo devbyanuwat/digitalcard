@@ -1,0 +1,328 @@
+<!-- @dsCard group="Builder Chrome" name="App Shell" viewport="1320x860" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>digitalcard — App Shell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/preview.css">
+<style>
+  html, body { height: 100%; }
+  body { overflow: hidden; }
+
+  .shell { display: grid; grid-template-rows: 49px 1fr; height: 100vh; }
+
+  /* ---- Topbar ---- */
+  .topbar {
+    display: flex; align-items: center; gap: var(--space-md);
+    padding: 0 var(--space-md);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: center; gap: var(--space-xs); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-snug); }
+  .brand .logo {
+    width: 22px; height: 22px; border-radius: 6px;
+    background: var(--accent); color: var(--accent-fg);
+    display: grid; place-items: center; font-weight: var(--fw-bold); font-size: 13px;
+  }
+  .topbar .crumb { color: var(--fg-subtle); }
+  .topbar .cardname {
+    display: inline-flex; align-items: center; gap: var(--space-xs);
+    font-weight: var(--fw-medium); color: var(--fg);
+    padding: var(--space-2xs) var(--space-xs); border-radius: var(--radius-sm);
+  }
+  .topbar .cardname:hover { background: var(--surface-2); }
+  .savedot { display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-caption); color: var(--fg-subtle); }
+  .savedot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+  .spacer { flex: 1; }
+  .i { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.75; fill: none; stroke-linecap: round; stroke-linejoin: round; display: block; }
+  .i--sm { width: 14px; height: 14px; }
+
+  /* ---- Workspace ---- */
+  .workspace { display: grid; grid-template-columns: 320px 1fr 288px; min-height: 0; }
+
+  /* ---- Left panel ---- */
+  .panel { display: flex; flex-direction: column; min-height: 0; background: var(--surface); }
+  .panel-left { border-right: 1px solid var(--border); }
+  .tabs { display: flex; gap: 2px; padding: var(--space-xs); border-bottom: 1px solid var(--border); }
+  .tab {
+    flex: 1; display: inline-flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: var(--space-xs) 0; border: 0; background: transparent; cursor: pointer;
+    color: var(--fg-muted); font-family: inherit; font-size: 11px; font-weight: var(--fw-medium);
+    border-radius: var(--radius-md);
+    transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
+  }
+  .tab:hover { background: var(--surface-2); color: var(--fg); }
+  .tab[aria-selected="true"] { color: var(--accent); background: var(--accent-subtle); }
+  .panel-scroll { overflow-y: auto; padding: var(--space-md); flex: 1; }
+  .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm); }
+  .panel-head h3 { font-size: var(--text-ui); font-weight: var(--fw-semibold); text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-muted); margin: 0; }
+
+  .blocklist { display: flex; flex-direction: column; gap: var(--space-2xs); }
+  .blockrow {
+    display: flex; align-items: center; gap: var(--space-xs);
+    padding: var(--space-xs); padding-left: 4px;
+    border: 1px solid transparent; border-radius: var(--radius-md);
+    cursor: grab; transition: background var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard);
+  }
+  .blockrow:hover { background: var(--surface-2); }
+  .blockrow[aria-selected="true"] { background: var(--surface); border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .blockrow .grip { color: var(--fg-subtle); display: flex; }
+  .blockrow .bicon {
+    width: 28px; height: 28px; flex: none; border-radius: var(--radius-sm);
+    display: grid; place-items: center; color: var(--fg-muted);
+    background: var(--surface-2); border: 1px solid var(--border);
+  }
+  .blockrow[aria-selected="true"] .bicon { color: var(--accent); background: var(--accent-subtle); border-color: transparent; }
+  .blockrow .blabel { flex: 1; min-width: 0; }
+  .blockrow .blabel b { font-weight: var(--fw-medium); font-size: var(--text-sm); display: block; }
+  .blockrow .blabel span { font-size: 11px; color: var(--fg-subtle); }
+  .addblock {
+    margin-top: var(--space-sm); width: 100%;
+    border: 1px dashed var(--border-strong); background: transparent; color: var(--fg-muted);
+    height: 36px; border-radius: var(--radius-md); cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs);
+    font-family: inherit; font-size: var(--text-ui); font-weight: var(--fw-medium);
+    transition: background var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
+  }
+  .addblock:hover { background: var(--accent-subtle); border-color: var(--accent); color: var(--accent); }
+
+  /* ---- Playground ---- */
+  .playground { display: flex; flex-direction: column; min-height: 0; background: var(--bg); }
+  .pg-toolbar {
+    display: flex; align-items: center; gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-md); border-bottom: 1px solid var(--border);
+    background: color-mix(in oklab, var(--surface) 60%, transparent);
+  }
+  .pg-toolbar .zoom { display: inline-flex; align-items: center; gap: var(--space-2xs); font-family: var(--font-mono); font-size: var(--text-caption); color: var(--fg-muted); }
+  .pg-stage {
+    flex: 1; min-height: 0; display: grid; place-items: center; padding: var(--space-2xl);
+    background-image: radial-gradient(var(--border) 1px, transparent 1px);
+    background-size: 18px 18px; position: relative;
+  }
+  .pg-floating {
+    position: absolute; bottom: var(--space-lg); left: 50%; transform: translateX(-50%);
+    display: inline-flex; align-items: center; gap: 2px; padding: 4px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-full); box-shadow: var(--shadow-md);
+  }
+  .pg-floating .sep { width: 1px; height: 18px; background: var(--border); margin: 0 4px; }
+
+  /* ---- Phone frame ---- */
+  .phone {
+    width: 320px; background: var(--surface);
+    border: 1px solid var(--border-strong); border-radius: 30px;
+    box-shadow: var(--shadow-lg); padding: 10px;
+  }
+  .phone-screen { border-radius: 22px; overflow: hidden; background: #fff; }
+
+  /* ---- Sample card (its OWN theme — "Minimal" — NOT chrome tokens) ---- */
+  .card {
+    --c-bg: #ffffff; --c-fg: #18181b; --c-muted: #71717a; --c-accent: #5b5bd6;
+    --c-border: #ececef;
+    background: var(--c-bg); color: var(--c-fg);
+    font-family: "Geist", system-ui, sans-serif;
+    padding: 28px 22px; text-align: center;
+  }
+  .card .avatar {
+    width: 76px; height: 76px; border-radius: 50%; margin: 0 auto 14px;
+    background: linear-gradient(145deg, #6366f1, #a78bfa); color: #fff;
+    display: grid; place-items: center; font-size: 26px; font-weight: 600;
+  }
+  .card h1 { font-size: 19px; font-weight: 600; margin: 0 0 2px; letter-spacing: -0.01em; }
+  .card .role { font-size: 13px; color: var(--c-muted); margin: 0; }
+  .card .company { font-size: 13px; color: var(--c-fg); font-weight: 500; margin: 1px 0 0; }
+  .card .socials { display: flex; justify-content: center; gap: 10px; margin: 16px 0; }
+  .card .socials a {
+    width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+    color: var(--c-fg); background: #f4f4f5; border: 1px solid var(--c-border);
+  }
+  .card .actions { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .card .actions a {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    height: 42px; border-radius: 12px; font-size: 14px; font-weight: 500; text-decoration: none;
+  }
+  .card .actions .primary { background: var(--c-accent); color: #fff; }
+  .card .actions .secondary { background: transparent; color: var(--c-fg); border: 1px solid var(--c-border); }
+  .card .foot { margin-top: 18px; font-size: 11px; color: #a1a1aa; }
+  .card .ic { width: 17px; height: 17px; stroke: currentColor; stroke-width: 1.75; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---- Right inspector ---- */
+  .inspector { border-left: 1px solid var(--border); }
+  .insp-head { padding: var(--space-md); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: var(--space-xs); }
+  .insp-head .bicon { width: 26px; height: 26px; flex: none; border-radius: var(--radius-sm); display: grid; place-items: center; color: var(--accent); background: var(--accent-subtle); }
+  .insp-head b { font-size: var(--text-sm); font-weight: var(--fw-semibold); }
+  .insp-head span { font-size: 11px; color: var(--fg-subtle); display: block; }
+  .insp-body { padding: var(--space-md); display: flex; flex-direction: column; gap: var(--space-md); overflow-y: auto; }
+  .uploader {
+    display: flex; align-items: center; gap: var(--space-sm);
+    padding: var(--space-sm); border: 1px solid var(--border); border-radius: var(--radius-md);
+  }
+  .uploader .ph {
+    width: 44px; height: 44px; border-radius: 50%; flex: none;
+    background: linear-gradient(145deg, #6366f1, #a78bfa); color: #fff;
+    display: grid; place-items: center; font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-text" viewBox="0 0 24 24"><path d="M17 6.1H3M21 12.1H3M15.1 18H3"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M14 21h3M21 17v4"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 21h14"/></symbol>
+  <symbol id="i-maximize" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 12.18-9.17 4.16a2 2 0 0 1-1.66 0L2 12.18"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M10 5H3m18 0h-7M14 5a2 2 0 1 0-4 0 2 2 0 0 0 4 0ZM20 12h-7M9 12H3m6 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0ZM10 19H3m18 0h-7m0 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0Z"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+</defs></svg>
+
+<div class="shell">
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="brand"><span class="logo">d</span>digitalcard</div>
+    <span class="crumb">/</span>
+    <button class="cardname">Alex Rivera <svg class="i i--sm"><use href="#i-settings"/></svg></button>
+    <span class="savedot">Saved</span>
+    <div class="spacer"></div>
+    <button class="icon-btn" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme==='dark'?'light':'dark'"><svg class="i"><use href="#i-sun"/></svg></button>
+    <button class="btn"><svg class="i"><use href="#i-share"/></svg> Share</button>
+    <button class="btn"><svg class="i"><use href="#i-qr"/></svg> QR</button>
+    <button class="btn btn--accent"><svg class="i"><use href="#i-globe"/></svg> Publish</button>
+  </header>
+
+  <div class="workspace">
+    <!-- Left panel -->
+    <aside class="panel panel-left">
+      <nav class="tabs" role="tablist">
+        <button class="tab" aria-selected="true" role="tab"><svg class="i"><use href="#i-layers"/></svg>Content</button>
+        <button class="tab" role="tab"><svg class="i"><use href="#i-palette"/></svg>Theme</button>
+        <button class="tab" role="tab"><svg class="i"><use href="#i-sliders"/></svg>Style</button>
+        <button class="tab" role="tab"><svg class="i"><use href="#i-settings"/></svg>Settings</button>
+      </nav>
+      <div class="panel-scroll">
+        <div class="panel-head"><h3>Blocks</h3><span class="badge">5</span></div>
+        <div class="blocklist">
+          <div class="blockrow" aria-selected="true">
+            <span class="grip"><svg class="i i--sm"><use href="#i-grip"/></svg></span>
+            <span class="bicon"><svg class="i i--sm"><use href="#i-user"/></svg></span>
+            <span class="blabel"><b>Header</b><span>Alex Rivera · Product Designer</span></span>
+            <button class="icon-btn" aria-label="Hide block"><svg class="i i--sm"><use href="#i-eye"/></svg></button>
+          </div>
+          <div class="blockrow">
+            <span class="grip"><svg class="i i--sm"><use href="#i-grip"/></svg></span>
+            <span class="bicon"><svg class="i i--sm"><use href="#i-text"/></svg></span>
+            <span class="blabel"><b>Bio</b><span>Designing calm tools…</span></span>
+            <button class="icon-btn" aria-label="Hide block"><svg class="i i--sm"><use href="#i-eye"/></svg></button>
+          </div>
+          <div class="blockrow">
+            <span class="grip"><svg class="i i--sm"><use href="#i-grip"/></svg></span>
+            <span class="bicon"><svg class="i i--sm"><use href="#i-link"/></svg></span>
+            <span class="blabel"><b>Links</b><span>3 links</span></span>
+            <button class="icon-btn" aria-label="Hide block"><svg class="i i--sm"><use href="#i-eye"/></svg></button>
+          </div>
+          <div class="blockrow">
+            <span class="grip"><svg class="i i--sm"><use href="#i-grip"/></svg></span>
+            <span class="bicon"><svg class="i i--sm"><use href="#i-share"/></svg></span>
+            <span class="blabel"><b>Social</b><span>LinkedIn · X · Dribbble</span></span>
+            <button class="icon-btn" aria-label="Hide block"><svg class="i i--sm"><use href="#i-eye"/></svg></button>
+          </div>
+          <div class="blockrow">
+            <span class="grip"><svg class="i i--sm"><use href="#i-grip"/></svg></span>
+            <span class="bicon"><svg class="i i--sm"><use href="#i-phone"/></svg></span>
+            <span class="blabel"><b>Contact</b><span>Call · Email · Save</span></span>
+            <button class="icon-btn" aria-label="Hide block"><svg class="i i--sm"><use href="#i-eye"/></svg></button>
+          </div>
+        </div>
+        <button class="addblock"><svg class="i"><use href="#i-plus"/></svg> Add block</button>
+      </div>
+    </aside>
+
+    <!-- Playground -->
+    <main class="playground">
+      <div class="pg-toolbar">
+        <div class="segmented" role="group" aria-label="Device">
+          <button aria-pressed="true">Phone</button>
+          <button aria-pressed="false">Tablet</button>
+          <button aria-pressed="false">Desktop</button>
+          <button aria-pressed="false">Custom</button>
+        </div>
+        <div class="spacer"></div>
+        <div class="zoom"><button class="icon-btn" aria-label="Zoom out"><svg class="i i--sm"><use href="#i-plus"/></svg></button>100%<button class="icon-btn" aria-label="Zoom in"><svg class="i i--sm"><use href="#i-plus"/></svg></button></div>
+      </div>
+      <div class="pg-stage">
+        <div class="phone">
+          <div class="phone-screen">
+            <article class="card">
+              <div class="avatar">AR</div>
+              <h1>Alex Rivera</h1>
+              <p class="role">Product Designer</p>
+              <p class="company">Lumen Labs</p>
+              <div class="socials">
+                <a href="#" aria-label="Website"><svg class="ic"><use href="#i-globe"/></svg></a>
+                <a href="#" aria-label="Email"><svg class="ic"><use href="#i-mail"/></svg></a>
+                <a href="#" aria-label="Share"><svg class="ic"><use href="#i-share"/></svg></a>
+              </div>
+              <div class="actions">
+                <a class="primary" href="#"><svg class="ic"><use href="#i-phone"/></svg> Call Alex</a>
+                <a class="secondary" href="#"><svg class="ic"><use href="#i-download"/></svg> Save contact</a>
+              </div>
+              <p class="foot">digitalcard.app/c/alex</p>
+            </article>
+          </div>
+        </div>
+        <div class="pg-floating">
+          <button class="icon-btn" aria-label="Copy link"><svg class="i"><use href="#i-copy"/></svg></button>
+          <button class="icon-btn" aria-label="QR code"><svg class="i"><use href="#i-qr"/></svg></button>
+          <button class="icon-btn" aria-label="Download"><svg class="i"><use href="#i-download"/></svg></button>
+          <span class="sep"></span>
+          <button class="icon-btn" aria-label="Fullscreen"><svg class="i"><use href="#i-maximize"/></svg></button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right inspector -->
+    <aside class="panel inspector">
+      <div class="insp-head">
+        <span class="bicon"><svg class="i i--sm"><use href="#i-user"/></svg></span>
+        <span><b>Header</b><span>Block settings</span></span>
+      </div>
+      <div class="insp-body">
+        <div class="uploader">
+          <div class="ph">AR</div>
+          <div style="flex:1">
+            <div class="ds-label" style="margin:0 0 2px">Avatar</div>
+            <button class="btn btn--sm">Upload image</button>
+          </div>
+        </div>
+        <div class="field"><label class="ds-label" for="f1">Full name</label><input id="f1" class="input" value="Alex Rivera"></div>
+        <div class="field"><label class="ds-label" for="f2">Role / title</label><input id="f2" class="input" value="Product Designer"></div>
+        <div class="field"><label class="ds-label" for="f3">Company</label><input id="f3" class="input" value="Lumen Labs"></div>
+        <div class="field"><label class="ds-label" for="f4">Tagline</label><input id="f4" class="input" placeholder="One short line…"></div>
+        <hr class="divider">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span class="ds-label" style="margin:0">Show on card</span>
+          <span class="toggle" aria-checked="true" role="switch" tabindex="0"></span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</body>
+</html>

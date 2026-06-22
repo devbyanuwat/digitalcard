@@ -1,0 +1,932 @@
+<!-- @dsCard group="Card Renderer" name="Theme Gallery — 6 OSS" viewport="1200x980" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>digitalcard — Theme Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600;700&family=Onest:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800;900&family=Manrope:wght@400;500;600;700&family=Gabarito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/preview.css">
+<style>
+  /* ---- Themes grid ---- */
+  .themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-xl);
+  }
+
+  .theme-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .theme-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+  .theme-name {
+    font-size: var(--text-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--fg);
+    margin: 0;
+  }
+
+  /* Icon helper — shared across all cards */
+  .ic {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex: none;
+  }
+
+  /* ================================================================
+     THEME 1 — MINIMAL
+     White bg · near-black · indigo accent · circle avatar · Geist
+  ================================================================ */
+  .card.theme-minimal {
+    --c-bg: #ffffff;
+    --c-fg: #18181b;
+    --c-muted: #71717a;
+    --c-subtle: #a1a1aa;
+    --c-accent: #5b5bd6;
+    --c-accent-fg: #ffffff;
+    --c-border: #e4e4e7;
+    --c-surface: #f4f4f5;
+    --c-avatar-r: 50%;
+
+    background: var(--c-bg);
+    color: var(--c-fg);
+    font-family: "Geist", system-ui, sans-serif;
+    padding: 28px 24px;
+    text-align: center;
+    border-radius: 18px;
+    border: 1px solid var(--c-border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .card.theme-minimal .avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--c-avatar-r);
+    background: linear-gradient(145deg, #818cf8, #a78bfa);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 auto 14px;
+  }
+  .card.theme-minimal .name {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 3px;
+  }
+  .card.theme-minimal .role {
+    font-size: 13px;
+    color: var(--c-muted);
+    margin: 0;
+  }
+  .card.theme-minimal .company {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-fg);
+    margin: 2px 0 0;
+  }
+  .card.theme-minimal .socials {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .card.theme-minimal .socials a {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    display: grid;
+    place-items: center;
+    color: var(--c-fg);
+    text-decoration: none;
+  }
+  .card.theme-minimal .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .card.theme-minimal .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 42px;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    background: var(--c-accent);
+    color: var(--c-accent-fg);
+  }
+  .card.theme-minimal .btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 42px;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    background: transparent;
+    color: var(--c-fg);
+    border: 1px solid var(--c-border);
+  }
+  .card.theme-minimal .foot {
+    margin: 14px 0 0;
+    font-size: 11px;
+    color: var(--c-subtle);
+    font-family: "Geist Mono", monospace;
+  }
+
+  /* ================================================================
+     THEME 2 — MONO DARK
+     Near-black bg · off-white text · hairlines · square avatar · Geist + Geist Mono
+  ================================================================ */
+  .card.theme-mono-dark {
+    --c-bg: #0f0f12;
+    --c-fg: #f2f2f4;
+    --c-muted: #8a8a96;
+    --c-subtle: #55555e;
+    --c-accent: #e8e8ef;
+    --c-accent-fg: #0f0f12;
+    --c-border: #242428;
+    --c-surface: #1a1a1f;
+
+    background: var(--c-bg);
+    color: var(--c-fg);
+    font-family: "Geist", system-ui, sans-serif;
+    padding: 28px 24px;
+    text-align: center;
+    border-radius: 14px;
+    border: 1px solid var(--c-border);
+  }
+  .card.theme-mono-dark .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 4px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    color: var(--c-muted);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: "Geist Mono", monospace;
+    margin: 0 auto 16px;
+    letter-spacing: -0.03em;
+  }
+  .card.theme-mono-dark .name {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 4px;
+  }
+  .card.theme-mono-dark .role {
+    font-size: 12px;
+    color: var(--c-muted);
+    font-family: "Geist Mono", monospace;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .card.theme-mono-dark .company {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-fg);
+    margin: 3px 0 0;
+  }
+  .card.theme-mono-dark .socials {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 18px 0;
+  }
+  .card.theme-mono-dark .socials a {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    background: transparent;
+    border: 1px solid var(--c-border);
+    display: grid;
+    place-items: center;
+    color: var(--c-muted);
+    text-decoration: none;
+  }
+  .card.theme-mono-dark .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card.theme-mono-dark .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 40px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    background: var(--c-accent);
+    color: var(--c-accent-fg);
+    letter-spacing: 0.01em;
+  }
+  .card.theme-mono-dark .btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 40px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    background: transparent;
+    color: var(--c-muted);
+    border: 1px solid var(--c-border);
+  }
+  .card.theme-mono-dark .foot {
+    margin: 16px 0 0;
+    font-size: 11px;
+    color: var(--c-subtle);
+    font-family: "Geist Mono", monospace;
+    letter-spacing: 0.02em;
+  }
+
+  /* ================================================================
+     THEME 3 — SOFT GRADIENT
+     Warm peach->rose outer · white inner surface · rounded avatar · Onest
+  ================================================================ */
+  .card.theme-soft-gradient {
+    --c-bg-grad: linear-gradient(145deg, #fde8d8 0%, #fad0d0 50%, #f9c5d4 100%);
+    --c-surface: rgba(255,255,255,0.90);
+    --c-fg: #2d1a1a;
+    --c-muted: #7a5050;
+    --c-subtle: #b08585;
+    --c-accent: #d94f6d;
+    --c-accent-fg: #ffffff;
+    --c-border: rgba(210,130,130,0.22);
+
+    background: var(--c-bg-grad);
+    color: var(--c-fg);
+    font-family: "Onest", system-ui, sans-serif;
+    padding: 6px;
+    border-radius: 22px;
+  }
+  .card.theme-soft-gradient .inner {
+    background: var(--c-surface);
+    border-radius: 17px;
+    padding: 24px 22px;
+    text-align: center;
+    border: 1px solid var(--c-border);
+  }
+  .card.theme-soft-gradient .avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #f9a8c9, #fbbf8a);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 auto 14px;
+  }
+  .card.theme-soft-gradient .name {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 3px;
+  }
+  .card.theme-soft-gradient .role {
+    font-size: 13px;
+    color: var(--c-muted);
+    margin: 0;
+  }
+  .card.theme-soft-gradient .company {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-accent);
+    margin: 2px 0 0;
+  }
+  .card.theme-soft-gradient .socials {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin: 16px 0;
+  }
+  .card.theme-soft-gradient .socials a {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(217,79,109,0.08);
+    border: 1px solid rgba(217,79,109,0.18);
+    display: grid;
+    place-items: center;
+    color: var(--c-accent);
+    text-decoration: none;
+  }
+  .card.theme-soft-gradient .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card.theme-soft-gradient .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 42px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--c-accent);
+    color: var(--c-accent-fg);
+  }
+  .card.theme-soft-gradient .btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 42px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--c-muted);
+    border: 1px solid var(--c-border);
+    background: transparent;
+  }
+  .card.theme-soft-gradient .foot {
+    margin: 14px 0 0;
+    font-size: 11px;
+    color: var(--c-subtle);
+  }
+
+  /* ================================================================
+     THEME 4 — BOLD EDITORIAL
+     High contrast · left-aligned · solid header block · Big Shoulders Display
+  ================================================================ */
+  .card.theme-editorial {
+    --c-bg: #f5f0e8;
+    --c-header-bg: #1a1508;
+    --c-header-fg: #f5f0e8;
+    --c-fg: #1a1508;
+    --c-muted: #5a5040;
+    --c-subtle: #8a806a;
+    --c-accent: #b05c10;
+    --c-accent-fg: #f5f0e8;
+    --c-border: #d8cdb8;
+    --c-surface: #ede8dc;
+
+    background: var(--c-bg);
+    color: var(--c-fg);
+    font-family: "Hanken Grotesk", system-ui, sans-serif;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--c-border);
+  }
+  .card.theme-editorial .header-block {
+    background: var(--c-header-bg);
+    color: var(--c-header-fg);
+    padding: 24px 22px 20px;
+    text-align: left;
+  }
+  .card.theme-editorial .name {
+    font-family: "Big Shoulders Display", system-ui, sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0 0 8px;
+    color: var(--c-header-fg);
+  }
+  .card.theme-editorial .role {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.55);
+    margin: 0;
+    font-weight: 500;
+  }
+  .card.theme-editorial .company {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-header-fg);
+    background: var(--c-accent);
+    padding: 3px 9px;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  .card.theme-editorial .body-block {
+    padding: 18px 22px 22px;
+    text-align: left;
+  }
+  .card.theme-editorial .socials {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .card.theme-editorial .socials a {
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    display: grid;
+    place-items: center;
+    color: var(--c-muted);
+    text-decoration: none;
+  }
+  .card.theme-editorial .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card.theme-editorial .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 40px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--c-header-bg);
+    color: var(--c-header-fg);
+    letter-spacing: 0.01em;
+  }
+  .card.theme-editorial .btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 40px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    background: transparent;
+    color: var(--c-muted);
+    border: 1px solid var(--c-border);
+  }
+  .card.theme-editorial .foot {
+    margin: 14px 0 0;
+    font-size: 11px;
+    color: var(--c-subtle);
+    font-family: "Hanken Grotesk", sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  /* ================================================================
+     THEME 5 — GLASS
+     Teal-slate duotone bg · frosted glass card · circle avatar · Manrope
+  ================================================================ */
+  .card.theme-glass {
+    --c-bg-grad: linear-gradient(145deg, #1a3a4a 0%, #0d2636 50%, #162b35 100%);
+    --c-glass-bg: rgba(255,255,255,0.09);
+    --c-glass-border: rgba(255,255,255,0.14);
+    --c-fg: #e8f4f8;
+    --c-muted: rgba(232,244,248,0.60);
+    --c-subtle: rgba(232,244,248,0.35);
+    --c-accent: #5ec4e8;
+    --c-accent-fg: #0d2636;
+
+    background: var(--c-bg-grad);
+    color: var(--c-fg);
+    font-family: "Manrope", system-ui, sans-serif;
+    padding: 8px;
+    border-radius: 22px;
+  }
+  .card.theme-glass .inner {
+    background: var(--c-glass-bg);
+    border: 1px solid var(--c-glass-border);
+    border-radius: 16px;
+    padding: 24px 22px;
+    text-align: center;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .card.theme-glass .avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, rgba(94,196,232,0.5), rgba(45,140,180,0.4));
+    border: 2px solid rgba(255,255,255,0.20);
+    color: var(--c-fg);
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 auto 14px;
+  }
+  .card.theme-glass .name {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 3px;
+  }
+  .card.theme-glass .role {
+    font-size: 13px;
+    color: var(--c-muted);
+    margin: 0;
+    font-weight: 500;
+  }
+  .card.theme-glass .company {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-accent);
+    margin: 2px 0 0;
+  }
+  .card.theme-glass .socials {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin: 16px 0;
+  }
+  .card.theme-glass .socials a {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.13);
+    display: grid;
+    place-items: center;
+    color: var(--c-muted);
+    text-decoration: none;
+  }
+  .card.theme-glass .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card.theme-glass .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 42px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--c-accent);
+    color: var(--c-accent-fg);
+  }
+  .card.theme-glass .btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 42px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--c-muted);
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+  }
+  .card.theme-glass .foot {
+    margin: 14px 0 0;
+    font-size: 11px;
+    color: var(--c-subtle);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  /* ================================================================
+     THEME 6 — PLAYFUL
+     Warm white bg · coral/amber accent · rounded-square avatar · Gabarito
+  ================================================================ */
+  .card.theme-playful {
+    --c-bg: #fffcf5;
+    --c-fg: #1f1108;
+    --c-muted: #7a6040;
+    --c-subtle: #b89f80;
+    --c-accent: #e85c2a;
+    --c-accent-fg: #ffffff;
+    --c-accent-2: #f5a623;
+    --c-border: #ecddc8;
+    --c-surface: #f5ecdc;
+
+    background: var(--c-bg);
+    color: var(--c-fg);
+    font-family: "Gabarito", system-ui, sans-serif;
+    padding: 28px 24px;
+    text-align: center;
+    border-radius: 28px;
+    border: 1.5px solid var(--c-border);
+    box-shadow: 4px 6px 0px var(--c-border);
+  }
+  .card.theme-playful .avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #f5a623, #e85c2a);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 auto 14px;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 0 var(--c-border);
+  }
+  .card.theme-playful .name {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 3px;
+    color: var(--c-fg);
+  }
+  .card.theme-playful .role {
+    font-size: 13px;
+    color: var(--c-muted);
+    margin: 0;
+    font-weight: 500;
+  }
+  .card.theme-playful .company {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-accent);
+    margin: 2px 0 0;
+  }
+  .card.theme-playful .socials {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin: 16px 0;
+  }
+  .card.theme-playful .socials a {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: var(--c-surface);
+    border: 1.5px solid var(--c-border);
+    display: grid;
+    place-items: center;
+    color: var(--c-muted);
+    text-decoration: none;
+    box-shadow: 0 2px 0 var(--c-border);
+  }
+  .card.theme-playful .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .card.theme-playful .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 46px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    background: var(--c-accent);
+    color: var(--c-accent-fg);
+    box-shadow: 0 3px 0 #b03e18;
+    letter-spacing: -0.01em;
+  }
+  .card.theme-playful .btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 46px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--c-fg);
+    border: 1.5px solid var(--c-border);
+    background: var(--c-surface);
+    box-shadow: 0 3px 0 var(--c-border);
+  }
+  .card.theme-playful .foot {
+    margin: 16px 0 0;
+    font-size: 11px;
+    color: var(--c-subtle);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- Shared inline SVG icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 21h14"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></symbol>
+</defs></svg>
+
+<!-- Theme toggle (page chrome only) -->
+<div class="ds-themeswitch">
+  <button class="btn btn--sm" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme==='dark'?'light':'dark'">
+    <svg width="12" height="12" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><use href="#i-sun"/></svg>
+    Toggle chrome
+  </button>
+</div>
+
+<div class="ds-page">
+  <p class="ds-eyebrow">Card Renderer</p>
+  <h1 class="ds-title">Theme Gallery — 6 OSS</h1>
+  <p class="ds-lede">The same card content rendered through 6 base themes. Each card carries its own scoped CSS custom properties — proof that theme is data. The page chrome toggles independently.</p>
+
+  <div class="ds-section">
+    <div class="ds-section-head">
+      <h2>OSS Theme Catalog</h2>
+      <span class="ds-meta">tier: oss · 6 themes</span>
+    </div>
+
+    <div class="themes-grid">
+
+      <!-- Theme 1: Minimal -->
+      <div class="theme-item">
+        <article class="card theme-minimal">
+          <div class="avatar">AR</div>
+          <h2 class="name">Alex Rivera</h2>
+          <p class="role">Product Designer</p>
+          <p class="company">Lumen Labs</p>
+          <div class="socials">
+            <a href="#" aria-label="Website"><svg class="ic"><use href="#i-globe"/></svg></a>
+            <a href="#" aria-label="Email"><svg class="ic"><use href="#i-mail"/></svg></a>
+            <a href="#" aria-label="Share"><svg class="ic"><use href="#i-share"/></svg></a>
+          </div>
+          <div class="actions">
+            <a class="btn-primary" href="#"><svg class="ic"><use href="#i-phone"/></svg> Call Alex</a>
+            <a class="btn-secondary" href="#"><svg class="ic"><use href="#i-download"/></svg> Save contact</a>
+          </div>
+          <p class="foot">digitalcard.app/c/alex</p>
+        </article>
+        <div class="theme-meta">
+          <span class="theme-name">Minimal</span>
+          <span class="badge badge--accent">minimal</span>
+        </div>
+      </div>
+
+      <!-- Theme 2: Mono Dark -->
+      <div class="theme-item">
+        <article class="card theme-mono-dark">
+          <div class="avatar">AR</div>
+          <h2 class="name">Alex Rivera</h2>
+          <p class="role">Product Designer</p>
+          <p class="company">Lumen Labs</p>
+          <div class="socials">
+            <a href="#" aria-label="Website"><svg class="ic"><use href="#i-globe"/></svg></a>
+            <a href="#" aria-label="Email"><svg class="ic"><use href="#i-mail"/></svg></a>
+            <a href="#" aria-label="Share"><svg class="ic"><use href="#i-share"/></svg></a>
+          </div>
+          <div class="actions">
+            <a class="btn-primary" href="#"><svg class="ic"><use href="#i-phone"/></svg> Call Alex</a>
+            <a class="btn-secondary" href="#"><svg class="ic"><use href="#i-download"/></svg> Save contact</a>
+          </div>
+          <p class="foot">digitalcard.app/c/alex</p>
+        </article>
+        <div class="theme-meta">
+          <span class="theme-name">Mono Dark</span>
+          <span class="badge badge--accent">dark</span>
+        </div>
+      </div>
+
+      <!-- Theme 3: Soft Gradient -->
+      <div class="theme-item">
+        <article class="card theme-soft-gradient">
+          <div class="inner">
+            <div class="avatar">AR</div>
+            <h2 class="name">Alex Rivera</h2>
+            <p class="role">Product Designer</p>
+            <p class="company">Lumen Labs</p>
+            <div class="socials">
+              <a href="#" aria-label="Website"><svg class="ic"><use href="#i-globe"/></svg></a>
+              <a href="#" aria-label="Email"><svg class="ic"><use href="#i-mail"/></svg></a>
+              <a href="#" aria-label="Share"><svg class="ic"><use href="#i-share"/></svg></a>
+            </div>
+            <div class="actions">
+              <a class="btn-primary" href="#"><svg class="ic"><use href="#i-phone"/></svg> Call Alex</a>
+              <a class="btn-secondary" href="#"><svg class="ic"><use href="#i-download"/></svg> Save contact</a>
+            </div>
+            <p class="foot">digitalcard.app/c/alex</p>
+          </div>
+        </article>
+        <div class="theme-meta">
+          <span class="theme-name">Soft Gradient</span>
+          <span class="badge badge--accent">gradient</span>
+        </div>
+      </div>
+
+      <!-- Theme 4: Bold Editorial -->
+      <div class="theme-item">
+        <article class="card theme-editorial">
+          <div class="header-block">
+            <h2 class="name">Alex Rivera</h2>
+            <p class="role">Product Designer</p>
+            <span class="company">Lumen Labs</span>
+          </div>
+          <div class="body-block">
+            <div class="socials">
+              <a href="#" aria-label="Website"><svg class="ic"><use href="#i-globe"/></svg></a>
+              <a href="#" aria-label="Email"><svg class="ic"><use href="#i-mail"/></svg></a>
+              <a href="#" aria-label="Share"><svg class="ic"><use href="#i-share"/></svg></a>
+            </div>
+            <div class="actions">
+              <a class="btn-primary" href="#"><svg class="ic"><use href="#i-phone"/></svg> Call Alex</a>
+              <a class="btn-secondary" href="#"><svg class="ic"><use href="#i-download"/></svg> Save contact</a>
+            </div>
+            <p class="foot">digitalcard.app/c/alex</p>
+          </div>
+        </article>
+        <div class="theme-meta">
+          <span class="theme-name">Bold Editorial</span>
+          <span class="badge badge--accent">bold</span>
+        </div>
+      </div>
+
+      <!-- Theme 5: Glass -->
+      <div class="theme-item">
+        <article class="card theme-glass">
+          <div class="inner">
+            <div class="avatar">AR</div>
+            <h2 class="name">Alex Rivera</h2>
+            <p class="role">Product Designer</p>
+            <p class="company">Lumen Labs</p>
+            <div class="socials">
+              <a href="#" aria-label="Website"><svg class="ic"><use href="#i-globe"/></svg></a>
+              <a href="#" aria-label="Email"><svg class="ic"><use href="#i-mail"/></svg></a>
+              <a href="#" aria-label="Share"><svg class="ic"><use href="#i-share"/></svg></a>
+            </div>
+            <div class="actions">
+              <a class="btn-primary" href="#"><svg class="ic"><use href="#i-phone"/></svg> Call Alex</a>
+              <a class="btn-secondary" href="#"><svg class="ic"><use href="#i-download"/></svg> Save contact</a>
+            </div>
+            <p class="foot">digitalcard.app/c/alex</p>
+          </div>
+        </article>
+        <div class="theme-meta">
+          <span class="theme-name">Glass</span>
+          <span class="badge badge--accent">glass</span>
+        </div>
+      </div>
+
+      <!-- Theme 6: Playful -->
+      <div class="theme-item">
+        <article class="card theme-playful">
+          <div class="avatar">AR</div>
+          <h2 class="name">Alex Rivera</h2>
+          <p class="role">Product Designer</p>
+          <p class="company">Lumen Labs</p>
+          <div class="socials">
+            <a href="#" aria-label="Website"><svg class="ic"><use href="#i-globe"/></svg></a>
+            <a href="#" aria-label="Email"><svg class="ic"><use href="#i-mail"/></svg></a>
+            <a href="#" aria-label="Share"><svg class="ic"><use href="#i-share"/></svg></a>
+          </div>
+          <div class="actions">
+            <a class="btn-primary" href="#"><svg class="ic"><use href="#i-phone"/></svg> Call Alex</a>
+            <a class="btn-secondary" href="#"><svg class="ic"><use href="#i-download"/></svg> Save contact</a>
+          </div>
+          <p class="foot">digitalcard.app/c/alex</p>
+        </article>
+        <div class="theme-meta">
+          <span class="theme-name">Playful</span>
+          <span class="badge badge--accent">playful</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

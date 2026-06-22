@@ -1,0 +1,33 @@
+# digitalcard
+
+> Open-source digital business card builder. Compose blocks, pick a theme, and
+> share by QR code or link. Self-host it (MIT) or use the hosted version.
+
+## What it is
+
+digitalcard is a free, open-source tool for creating a digital business card —
+a single shareable page with your name, role, links, and contact actions. You
+build the card from composable blocks (header, bio, links, social, contact, CTA,
+gallery, map), choose a theme, then share it as a QR code, a link, or a saved
+contact (vCard). The same rendering engine powers both the self-hosted build and
+the hosted version; only the theme catalog differs.
+
+## Key features
+
+- Block-based editor: drag to reorder, toggle, and edit blocks live.
+- Themes as data: pick from built-in themes or customize accent, font, radius,
+  shape, alignment, and spacing.
+- Sharing: QR code (PNG/SVG), copy link, and vCard (.vcf) export.
+- Open-core: self-host the MIT-licensed build, or use the hosted version for a
+  larger theme catalog.
+- Privacy-friendly: your card data lives in your browser until you publish.
+
+## Use cases
+
+Personal profile, business card, link-in-bio, and save-to-contacts — all from
+one composable card.
+
+## Links
+
+- Editor: https://digitalcard.app/edit
+- Source code: https://github.com/digitalcard/digitalcard

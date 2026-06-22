@@ -1,0 +1,409 @@
+<!-- @dsCard group="Builder Chrome" name="Style Panel" viewport="800x900" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>digitalcard — Style Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/preview.css">
+<style>
+  .i { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.75; fill: none; stroke-linecap: round; stroke-linejoin: round; display: block; flex: none; }
+  .i--sm { width: 14px; height: 14px; }
+
+  /* Panel wrapper */
+  .panel-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--space-2xl);
+    padding: var(--space-xl) 0;
+  }
+
+  /* The panel itself */
+  .style-panel {
+    width: 340px;
+    flex: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-header h3 {
+    font-size: var(--text-ui);
+    font-weight: var(--fw-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--fg-muted);
+    margin: 0;
+  }
+
+  .panel-body {
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  /* Section divider within panel */
+  .panel-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  /* Color swatches row */
+  .swatch-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+  }
+  .swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    flex: none;
+    transition: transform var(--dur-fast) var(--ease-standard),
+                box-shadow var(--dur-fast) var(--ease-standard);
+  }
+  .swatch:hover { transform: scale(1.1); }
+  .swatch--selected {
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
+  }
+  .swatch-custom {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 var(--space-xs);
+    font-size: var(--text-caption);
+    font-weight: var(--fw-medium);
+    color: var(--fg-muted);
+    background: var(--surface-2);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .swatch-custom:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Range slider */
+  .range-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .range-wrap input[type="range"] {
+    flex: 1;
+    height: 4px;
+    appearance: none;
+    background: var(--border-strong);
+    border-radius: var(--radius-full);
+    outline: none;
+    cursor: pointer;
+  }
+  .range-wrap input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--surface);
+    box-shadow: 0 0 0 1px var(--accent);
+    cursor: pointer;
+  }
+  .range-wrap input[type="range"]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--surface);
+    box-shadow: 0 0 0 1px var(--accent);
+    cursor: pointer;
+  }
+  .range-value {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-muted);
+    min-width: 28px;
+    text-align: right;
+  }
+
+  /* Contrast checker */
+  .contrast-checker {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .contrast-checker-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    font-size: var(--text-caption);
+    font-weight: var(--fw-medium);
+    color: var(--fg-muted);
+  }
+  .contrast-sample {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-xs) var(--space-sm);
+    gap: var(--space-sm);
+  }
+  .contrast-sample + .contrast-sample {
+    border-top: 1px solid var(--border);
+  }
+  .sample-swatch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    font-size: var(--text-ui);
+    font-weight: var(--fw-medium);
+  }
+  .sample-pass {
+    background: oklch(0.530 0.190 278);
+    color: #fff;
+  }
+  .sample-fail {
+    background: oklch(0.820 0.100 278);
+    color: #fff;
+  }
+  .badge--success {
+    color: var(--success);
+    background: oklch(0.962 0.025 150);
+    border-color: transparent;
+  }
+  .badge--warning {
+    color: var(--warning);
+    background: oklch(0.975 0.020 70);
+    border-color: transparent;
+  }
+  .badge--destructive {
+    color: var(--destructive);
+    background: oklch(0.975 0.020 27);
+    border-color: transparent;
+  }
+
+  /* Annotation note on the right */
+  .annotation-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-width: 220px;
+    padding-top: var(--space-xs);
+  }
+  .annotation {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .annotation .ann-label {
+    font-size: var(--text-caption);
+    font-weight: var(--fw-medium);
+    color: var(--fg-muted);
+  }
+  .annotation p {
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+    margin: 0;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M10 5H3m18 0h-7M14 5a2 2 0 1 0-4 0 2 2 0 0 0 4 0ZM20 12h-7M9 12H3m6 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0ZM10 19H3m18 0h-7m0 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0Z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+</defs></svg>
+
+<!-- Theme toggle -->
+<div class="ds-themeswitch">
+  <button class="icon-btn" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme==='dark'?'light':'dark'">
+    <svg class="i"><use href="#i-sun"/></svg>
+  </button>
+</div>
+
+<div class="ds-page">
+  <p class="ds-eyebrow">Builder Chrome</p>
+  <h1 class="ds-title">Style Panel</h1>
+  <p class="ds-lede">The Style tab lets you override accent color, typography, radius, and layout on top of the active theme — without forking it. Changes are a partial merge applied at render time.</p>
+
+  <div class="ds-section">
+    <div class="ds-section-head">
+      <h2>Panel — Style Tab</h2>
+      <span class="ds-meta">340px wide, left panel</span>
+    </div>
+
+    <div class="panel-wrap">
+
+      <!-- THE PANEL -->
+      <div class="style-panel">
+        <div class="panel-header">
+          <svg class="i i--sm"><use href="#i-sliders"/></svg>
+          <h3>Style</h3>
+        </div>
+
+        <div class="panel-body">
+
+          <!-- Accent color -->
+          <div class="panel-section">
+            <div class="ds-label">Accent color</div>
+            <div class="swatch-row">
+              <!-- indigo — selected -->
+              <button class="swatch swatch--selected" style="background: oklch(0.530 0.190 278);" aria-label="Indigo (selected)" aria-pressed="true"></button>
+              <!-- violet -->
+              <button class="swatch" style="background: oklch(0.550 0.200 300);" aria-label="Violet" aria-pressed="false"></button>
+              <!-- blue -->
+              <button class="swatch" style="background: oklch(0.550 0.180 240);" aria-label="Blue" aria-pressed="false"></button>
+              <!-- teal -->
+              <button class="swatch" style="background: oklch(0.600 0.140 185);" aria-label="Teal" aria-pressed="false"></button>
+              <!-- rose -->
+              <button class="swatch" style="background: oklch(0.620 0.200 15);" aria-label="Rose" aria-pressed="false"></button>
+              <!-- amber -->
+              <button class="swatch" style="background: oklch(0.700 0.160 70);" aria-label="Amber" aria-pressed="false"></button>
+              <!-- custom -->
+              <button class="swatch-custom" aria-label="Custom color">
+                <svg style="width:10px;height:10px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg>
+                Custom
+              </button>
+            </div>
+          </div>
+
+          <hr class="divider" style="margin: 0">
+
+          <!-- Font -->
+          <div class="panel-section">
+            <div class="ds-label">Font</div>
+            <select class="select" aria-label="Font family">
+              <option selected>Geist</option>
+              <option>Inter</option>
+              <option>DM Sans</option>
+              <option>Syne</option>
+              <option>Space Grotesk</option>
+              <option>Playfair Display</option>
+            </select>
+          </div>
+
+          <hr class="divider" style="margin: 0">
+
+          <!-- Radius -->
+          <div class="panel-section">
+            <div class="ds-label">Corner radius</div>
+            <div class="range-wrap">
+              <input type="range" min="0" max="24" value="8" aria-label="Corner radius" aria-valuetext="8px"
+                oninput="this.parentElement.querySelector('.range-value').textContent = this.value + 'px'">
+              <span class="range-value">8px</span>
+            </div>
+          </div>
+
+          <hr class="divider" style="margin: 0">
+
+          <!-- Avatar shape -->
+          <div class="panel-section">
+            <div class="ds-label">Avatar shape</div>
+            <div class="segmented" role="group" aria-label="Avatar shape">
+              <button aria-pressed="true">Circle</button>
+              <button aria-pressed="false">Rounded</button>
+              <button aria-pressed="false">Square</button>
+            </div>
+          </div>
+
+          <hr class="divider" style="margin: 0">
+
+          <!-- Layout align -->
+          <div class="panel-section">
+            <div class="ds-label">Content align</div>
+            <div class="segmented" role="group" aria-label="Content alignment">
+              <button aria-pressed="true">Center</button>
+              <button aria-pressed="false">Left</button>
+            </div>
+          </div>
+
+          <hr class="divider" style="margin: 0">
+
+          <!-- Spacing -->
+          <div class="panel-section">
+            <div class="ds-label">Spacing</div>
+            <div class="segmented" role="group" aria-label="Spacing density">
+              <button aria-pressed="false">Compact</button>
+              <button aria-pressed="true">Normal</button>
+              <button aria-pressed="false">Roomy</button>
+            </div>
+          </div>
+
+          <hr class="divider" style="margin: 0">
+
+          <!-- Contrast checker -->
+          <div class="panel-section">
+            <div class="ds-label">Live contrast check</div>
+            <div class="contrast-checker">
+              <div class="contrast-checker-head">
+                <span>Text on accent swatch</span>
+                <span class="mono subtle" style="font-size:var(--text-caption)">WCAG 2.1</span>
+              </div>
+              <!-- Pass sample -->
+              <div class="contrast-sample">
+                <div class="sample-swatch sample-pass">Aa sample text</div>
+                <span class="badge badge--success">4.8:1 AA</span>
+              </div>
+              <!-- Fail sample -->
+              <div class="contrast-sample">
+                <div class="sample-swatch sample-fail">Aa sample text</div>
+                <span class="badge badge--destructive">2.9:1 Fail</span>
+              </div>
+            </div>
+            <p class="field__hint">Adjust the accent color above until both samples pass. The card renderer will use this color for buttons and links.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Annotation column -->
+      <div class="annotation-col">
+        <div class="annotation">
+          <span class="ann-label">Customization model</span>
+          <p>Overrides are a partial that merges onto the active theme at render time. You can reset any field back to the theme default.</p>
+        </div>
+        <div class="annotation">
+          <span class="ann-label">Accent is locked to indigo in chrome</span>
+          <p>The builder UI always uses the indigo system accent. What you set here applies only to your card's rendered output.</p>
+        </div>
+        <div class="annotation">
+          <span class="ann-label">Contrast checker</span>
+          <p>Cards are user-customized, so the builder can't guarantee AAA. The live checker shows the current ratio and flags failures with a destructive badge — it guides without blocking.</p>
+        </div>
+        <div class="annotation">
+          <span class="ann-label">Font scope</span>
+          <p>Fonts chosen here load on the public card page only. The builder chrome always uses Geist regardless.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

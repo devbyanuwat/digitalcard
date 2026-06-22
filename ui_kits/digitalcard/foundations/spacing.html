@@ -1,0 +1,479 @@
+<!-- @dsCard group="Foundations" name="Spacing, Radius, Elevation" viewport="1200x1100" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>digitalcard — Spacing, Radius, Elevation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/preview.css">
+<style>
+  /* ---- Spacing bars ---- */
+  .space-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  .space-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+  .space-track {
+    flex: 1;
+    height: 20px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .space-fill {
+    height: 100%;
+    background: color-mix(in oklab, var(--accent) 30%, var(--surface));
+    border-radius: var(--radius-sm);
+    min-width: 2px;
+  }
+  .space-meta {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    width: 180px;
+    flex-shrink: 0;
+  }
+  .space-token {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg);
+    font-weight: var(--fw-medium);
+    min-width: 100px;
+  }
+  .space-px {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+  }
+
+  /* ---- Radius samples ---- */
+  .radius-row {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-xl);
+    flex-wrap: wrap;
+  }
+  .radius-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .radius-box {
+    background: var(--accent-subtle);
+    border: 1px solid var(--accent);
+    width: 64px;
+    height: 64px;
+  }
+  .radius-pill {
+    background: var(--accent-subtle);
+    border: 1px solid var(--accent);
+    width: 120px;
+    height: 36px;
+    border-radius: var(--radius-full);
+  }
+  .radius-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-muted);
+    text-align: center;
+  }
+
+  /* ---- Elevation cards ---- */
+  .elevation-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-xl);
+    padding: var(--space-2xl);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+  .elev-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  .elev-title {
+    font-size: var(--text-ui);
+    font-weight: var(--fw-semibold);
+    color: var(--fg);
+  }
+  .elev-token {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+  }
+  .elev-usage {
+    font-size: var(--text-caption);
+    color: var(--fg-muted);
+    margin-top: var(--space-2xs);
+  }
+
+  /* ---- Motion ---- */
+  .motion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+  }
+  .motion-table {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .motion-table-head {
+    padding: var(--space-xs) var(--space-md);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    font-size: var(--text-caption);
+    font-weight: var(--fw-medium);
+    color: var(--fg-muted);
+  }
+  .motion-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-xs) var(--space-md);
+    border-bottom: 1px solid var(--border);
+    gap: var(--space-md);
+  }
+  .motion-row:last-child { border-bottom: 0; }
+  .motion-token {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg);
+    font-weight: var(--fw-medium);
+  }
+  .motion-val {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-subtle);
+    text-align: right;
+  }
+  .motion-role {
+    font-size: var(--text-caption);
+    color: var(--fg-muted);
+    min-width: 120px;
+  }
+
+  /* ---- Hover demo ---- */
+  .hover-demo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+  .hover-box {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-md);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    display: grid;
+    place-items: center;
+    font-size: var(--text-caption);
+    color: var(--fg-muted);
+    cursor: pointer;
+    transition: background var(--dur-base) var(--ease-out),
+                border-color var(--dur-base) var(--ease-out),
+                color var(--dur-base) var(--ease-out);
+  }
+  .hover-box:hover {
+    background: var(--accent-subtle);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .hover-desc {
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    max-width: 36ch;
+    line-height: var(--lh-normal);
+  }
+  .hover-desc code {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1px 4px;
+    color: var(--fg);
+  }
+
+  /* ---- Note ---- */
+  .ds-note {
+    padding: var(--space-md) var(--space-lg);
+    background: var(--accent-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    max-width: 72ch;
+    line-height: var(--lh-normal);
+  }
+  .ds-note strong { color: var(--fg); font-weight: var(--fw-semibold); }
+</style>
+</head>
+<body>
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></symbol>
+</defs></svg>
+
+<div class="ds-themeswitch">
+  <button class="icon-btn" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark'">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <use href="#i-sun"/>
+    </svg>
+  </button>
+</div>
+
+<div class="ds-page">
+  <p class="ds-eyebrow">Foundations</p>
+  <h1 class="ds-title">Spacing, Radius, Elevation</h1>
+  <p class="ds-lede">8px base grid with 4px half-steps. Semantic spacing tokens. Radius tokens shared across chrome components. Elevation via subtle shadows — borders are always preferred over shadows for structure.</p>
+
+  <!-- Spacing scale -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Spacing scale</h2>
+      <span class="ds-meta">4pt base — 2px to 96px</span>
+    </div>
+    <div class="space-list">
+
+      <div class="space-row">
+        <div class="space-meta">
+          <span class="space-token">--space-half</span>
+          <span class="space-px">2px</span>
+        </div>
+        <div class="space-track"><div class="space-fill" style="width:2px"></div></div>
+      </div>
+
+      <div class="space-row">
+        <div class="space-meta">
+          <span class="space-token">--space-2xs</span>
+          <span class="space-px">4px</span>
+        </div>
+        <div class="space-track"><div class="space-fill" style="width:4px"></div></div>
+      </div>
+
+      <div class="space-row">
+        <div class="space-meta">
+          <span class="space-token">--space-xs</span>
+          <span class="space-px">8px</span>
+        </div>
+        <div class="space-track"><div class="space-fill" style="width:8px"></div></div>
+      </div>
+
+      <div class="space-row">
+        <div class="space-meta">
+          <span class="space-token">--space-sm</span>
+          <span class="space-px">12px</span>
+        </div>
+        <div class="space-track"><div class="space-fill" style="width:12px"></div></div>
+      </div>
+
+      <div class="space-row">
+        <div class="space-meta">
+          <span class="space-token">--space-md</span>
+          <span class="space-px">16px</span>
+        </div>
+        <div class="space-track"><div class="space-fill" style="width:16px"></div></div>
+      </div>
+
+      <div class="space-row">
+        <div class="space-meta">
+          <span class="space-token">--space-lg</span>
+          <span class="space-px">24px</span>
+        </div>
+        <div class="space-track"><div class="space-fill" style="width:24px"></div></div>
+      </div>
+
+      <div class="space-row">
+        <div class="space-meta">
+          <span class="space-token">--space-xl</span>
+          <span class="space-px">32px</span>
+        </div>
+        <div class="space-track"><div class="space-fill" style="width:32px"></div></div>
+      </div>
+
+      <div class="space-row">
+        <div class="space-meta">
+          <span class="space-token">--space-2xl</span>
+          <span class="space-px">48px</span>
+        </div>
+        <div class="space-track"><div class="space-fill" style="width:48px"></div></div>
+      </div>
+
+      <div class="space-row">
+        <div class="space-meta">
+          <span class="space-token">--space-3xl</span>
+          <span class="space-px">64px</span>
+        </div>
+        <div class="space-track"><div class="space-fill" style="width:64px"></div></div>
+      </div>
+
+      <div class="space-row">
+        <div class="space-meta">
+          <span class="space-token">--space-4xl</span>
+          <span class="space-px">96px</span>
+        </div>
+        <div class="space-track"><div class="space-fill" style="width:96px"></div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Radius -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Border radius</h2>
+      <span class="ds-meta">5 steps — 6px to full pill</span>
+    </div>
+    <div class="ds-stage">
+      <div class="radius-row">
+
+        <div class="radius-item">
+          <div class="radius-box" style="border-radius:var(--radius-sm)"></div>
+          <span class="radius-label">--radius-sm<br>6px · badges, kbd</span>
+        </div>
+
+        <div class="radius-item">
+          <div class="radius-box" style="border-radius:var(--radius-md)"></div>
+          <span class="radius-label">--radius-md<br>8px · inputs, buttons</span>
+        </div>
+
+        <div class="radius-item">
+          <div class="radius-box" style="border-radius:var(--radius-lg)"></div>
+          <span class="radius-label">--radius-lg<br>12px · panels, cards</span>
+        </div>
+
+        <div class="radius-item">
+          <div class="radius-box" style="border-radius:var(--radius-xl)"></div>
+          <span class="radius-label">--radius-xl<br>16px · dialogs, sheets</span>
+        </div>
+
+        <div class="radius-item">
+          <div class="radius-pill"></div>
+          <span class="radius-label">--radius-full<br>9999px · pills, toggles</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Elevation -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Elevation</h2>
+      <span class="ds-meta">Borders first — shadows clarify layer, not structure</span>
+    </div>
+    <div class="elevation-row">
+
+      <div class="elev-card" style="box-shadow:var(--shadow-xs)">
+        <span class="elev-title">xs</span>
+        <span class="elev-token">--shadow-xs</span>
+        <span class="elev-usage">Resting state — block rows, avatar, small surfaces. Nearly invisible on light backgrounds.</span>
+      </div>
+
+      <div class="elev-card" style="box-shadow:var(--shadow-sm)">
+        <span class="elev-title">sm</span>
+        <span class="elev-token">--shadow-sm</span>
+        <span class="elev-usage">Raised elements — selected block row, phone frame in playground when hovered.</span>
+      </div>
+
+      <div class="elev-card" style="box-shadow:var(--shadow-md)">
+        <span class="elev-title">md</span>
+        <span class="elev-token">--shadow-md</span>
+        <span class="elev-usage">Dropdowns, popovers, floating toolbars. Floats clearly above the base surface.</span>
+      </div>
+
+      <div class="elev-card" style="box-shadow:var(--shadow-lg)">
+        <span class="elev-title">lg</span>
+        <span class="elev-token">--shadow-lg</span>
+        <span class="elev-usage">Modals, dialogs, the phone preview frame. Highest level — use sparingly.</span>
+      </div>
+
+    </div>
+    <p class="ds-note" style="margin-top:var(--space-lg)">
+      <strong>Borders over shadows.</strong> All four cards above also carry a 1px border (--border). That border is the primary structure signal — the shadow adds depth. In dark mode, shadows deepen significantly (opacity 0.30-0.55) while borders lighten, maintaining the same visual hierarchy without needing extra shadow layers.
+    </p>
+  </section>
+
+  <!-- Motion -->
+  <section class="ds-section">
+    <div class="ds-section-head">
+      <h2>Motion</h2>
+      <span class="ds-meta">Transform + opacity only. Respects prefers-reduced-motion.</span>
+    </div>
+    <div class="motion-grid">
+
+      <div class="motion-table">
+        <div class="motion-table-head">Durations</div>
+        <div class="motion-row">
+          <span class="motion-token">--dur-fast</span>
+          <span class="motion-role">Micro-interactions</span>
+          <span class="motion-val">120ms</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-token">--dur-base</span>
+          <span class="motion-role">Panel transitions</span>
+          <span class="motion-val">180ms</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-token">--dur-slow</span>
+          <span class="motion-role">Overlays, modals</span>
+          <span class="motion-val">240ms</span>
+        </div>
+      </div>
+
+      <div class="motion-table">
+        <div class="motion-table-head">Easings</div>
+        <div class="motion-row">
+          <span class="motion-token">--ease-standard</span>
+          <span class="motion-role">Default</span>
+          <span class="motion-val">cubic(0.2,0,0,1)</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-token">--ease-out</span>
+          <span class="motion-role">Enter / expand</span>
+          <span class="motion-val">cubic(0.16,1,0.3,1)</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-token">--ease-in</span>
+          <span class="motion-role">Exit / collapse</span>
+          <span class="motion-val">cubic(0.4,0,1,1)</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Hover demo -->
+    <div class="ds-stage" style="margin-top:var(--space-lg)">
+      <p class="ds-label" style="margin-bottom:var(--space-md)">Live demo — hover the box</p>
+      <div class="hover-demo">
+        <div class="hover-box">Hover</div>
+        <p class="hover-desc">Background transitions from <code>--surface-2</code> to <code>--accent-subtle</code> using <code>var(--dur-base)</code> + <code>var(--ease-out)</code> (180ms expo-out). This is the same transition used on hovered block rows in the content panel — fast enough to feel instant, long enough to feel intentional.</p>
+      </div>
+    </div>
+
+    <p class="ds-note" style="margin-top:var(--space-lg)">
+      <strong>Rules.</strong> Animate only <code>transform</code> and <code>opacity</code> for performance — avoid animating <code>width</code>, <code>height</code>, or layout properties. Live preview debounces text inputs ~120ms to avoid flickering on fast typists; toggles and select changes apply instantly. Block drag-and-reorder uses a spring (no CSS token — handled by the dnd library). All durations collapse to 0.01ms when <code>prefers-reduced-motion: reduce</code> is set.
+    </p>
+  </section>
+
+</div>
+</body>
+</html>

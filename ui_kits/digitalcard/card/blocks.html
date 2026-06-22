@@ -1,0 +1,557 @@
+<!-- @dsCard group="Card Renderer" name="Card Blocks" viewport="1200x980" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>digitalcard — Card Blocks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/preview.css">
+<style>
+  /* ---- Block preview scaffolding ---- */
+  .blocks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .block-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  /* Each block demo lives in a minimal-theme card container */
+  .card-wrap {
+    /* Minimal theme scoped tokens */
+    --c-bg: #ffffff;
+    --c-fg: #18181b;
+    --c-muted: #71717a;
+    --c-subtle: #a1a1aa;
+    --c-accent: #5b5bd6;
+    --c-accent-fg: #ffffff;
+    --c-border: #e4e4e7;
+    --c-surface: #f4f4f5;
+    --c-radius: 14px;
+
+    background: var(--c-bg);
+    color: var(--c-fg);
+    font-family: "Geist", system-ui, sans-serif;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ---- Icon helper ---- */
+  .ic {
+    width: 17px;
+    height: 17px;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex: none;
+  }
+  .ic-lg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex: none;
+  }
+
+  /* ============================
+     BLOCK: Header
+  ============================ */
+  .block-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+  }
+  .block-header .avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #818cf8, #a78bfa);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    flex: none;
+  }
+  .block-header h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--c-fg);
+  }
+  .block-header .role {
+    margin: 0;
+    font-size: 13px;
+    color: var(--c-muted);
+  }
+  .block-header .company {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-fg);
+  }
+
+  /* ============================
+     BLOCK: Bio
+  ============================ */
+  .block-bio {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--c-muted);
+    margin: 0;
+  }
+
+  /* ============================
+     BLOCK: Links
+  ============================ */
+  .block-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .link-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--c-fg);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .link-row .link-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    display: grid;
+    place-items: center;
+    flex: none;
+    color: var(--c-accent);
+  }
+  .link-row .link-label { flex: 1; }
+  .link-row .chevron { color: var(--c-subtle); }
+
+  /* ============================
+     BLOCK: Social
+  ============================ */
+  .block-social {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .social-chip {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    display: grid;
+    place-items: center;
+    color: var(--c-fg);
+    text-decoration: none;
+    flex: none;
+  }
+  .social-chip:hover { border-color: var(--c-accent); color: var(--c-accent); }
+
+  /* ============================
+     BLOCK: Contact
+  ============================ */
+  .block-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .contact-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 42px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+  }
+  .contact-btn.primary {
+    background: var(--c-accent);
+    color: var(--c-accent-fg);
+  }
+  .contact-btn.secondary {
+    background: transparent;
+    color: var(--c-fg);
+    border: 1px solid var(--c-border);
+  }
+  .contact-btn.ghost {
+    background: var(--c-surface);
+    color: var(--c-muted);
+  }
+
+  /* ============================
+     BLOCK: CTA
+  ============================ */
+  .block-cta .cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 46px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--c-accent);
+    color: var(--c-accent-fg);
+    letter-spacing: -0.01em;
+  }
+
+  /* ============================
+     BLOCK: Gallery
+  ============================ */
+  .block-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+  }
+  .gallery-tile {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .gallery-tile:nth-child(1) {
+    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  }
+  .gallery-tile:nth-child(2) {
+    background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+  }
+  .gallery-tile:nth-child(3) {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  }
+
+  /* ============================
+     BLOCK: Map
+  ============================ */
+  .block-map {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .map-placeholder {
+    position: relative;
+    height: 120px;
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #e0f2fe 100%);
+    border-radius: 10px;
+    border: 1px solid #bae6fd;
+    overflow: hidden;
+  }
+  /* CSS grid lines to simulate map tiles */
+  .map-placeholder::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(#93c5fd33 1px, transparent 1px),
+      linear-gradient(90deg, #93c5fd33 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  /* Pin marker */
+  .map-pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+  }
+  .map-pin svg {
+    width: 28px;
+    height: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  }
+  .map-address {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: var(--c-muted);
+  }
+
+  /* ============================
+     BLOCK: Divider
+  ============================ */
+  .block-divider hr {
+    border: none;
+    border-top: 1px solid var(--c-border);
+    margin: 4px 0;
+  }
+
+  /* ============================
+     BLOCK: Spacer
+  ============================ */
+  .block-spacer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .spacer-gap {
+    height: 32px;
+    flex: 1;
+    border: 1px dashed var(--c-border);
+    border-radius: 6px;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 4px,
+      #f4f4f5 4px,
+      #f4f4f5 8px
+    );
+  }
+  .spacer-label {
+    font-size: 11px;
+    font-family: "Geist Mono", monospace;
+    color: var(--c-subtle);
+    white-space: nowrap;
+  }
+
+  /* Chevron inline SVG */
+  .chevron-icon {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+</style>
+</head>
+<body>
+
+<!-- Icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 21h14"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></symbol>
+  <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+</defs></svg>
+
+<!-- Theme toggle -->
+<div class="ds-themeswitch">
+  <button class="btn btn--sm" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme==='dark'?'light':'dark'">
+    <svg width="12" height="12" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><use href="#i-sun"/></svg>
+    Toggle theme
+  </button>
+</div>
+
+<div class="ds-page">
+  <p class="ds-eyebrow">Card Renderer</p>
+  <h1 class="ds-title">Card Blocks</h1>
+  <p class="ds-lede">Each block type rendered individually in the Minimal theme context (~320px card container). Reviewers see block anatomy in isolation before they appear composed in a full card.</p>
+
+  <div class="ds-section">
+    <div class="ds-section-head">
+      <h2>Block Inventory</h2>
+      <span class="ds-meta">10 block types</span>
+    </div>
+
+    <div class="blocks-grid">
+
+      <!-- Header -->
+      <div class="block-item">
+        <p class="ds-label">Header</p>
+        <div class="card-wrap">
+          <div class="block-header">
+            <div class="avatar">AR</div>
+            <h2>Alex Rivera</h2>
+            <p class="role">Product Designer</p>
+            <p class="company">Lumen Labs</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="block-item">
+        <p class="ds-label">Bio</p>
+        <div class="card-wrap">
+          <p class="block-bio">Designing calm, precise tools for builders and professionals. Currently at Lumen Labs, previously at Vercel and Linear.</p>
+        </div>
+      </div>
+
+      <!-- Links -->
+      <div class="block-item">
+        <p class="ds-label">Links</p>
+        <div class="card-wrap">
+          <div class="block-links">
+            <a class="link-row" href="#">
+              <span class="link-icon"><svg class="ic"><use href="#i-globe"/></svg></span>
+              <span class="link-label">Portfolio — lumenlabs.io</span>
+              <svg class="chevron-icon"><use href="#i-chevron-right"/></svg>
+            </a>
+            <a class="link-row" href="#">
+              <span class="link-icon"><svg class="ic"><use href="#i-external"/></svg></span>
+              <span class="link-label">Case study — Relay</span>
+              <svg class="chevron-icon"><use href="#i-chevron-right"/></svg>
+            </a>
+            <a class="link-row" href="#">
+              <span class="link-icon"><svg class="ic"><use href="#i-link"/></svg></span>
+              <span class="link-label">Resume — PDF</span>
+              <svg class="chevron-icon"><use href="#i-chevron-right"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social -->
+      <div class="block-item">
+        <p class="ds-label">Social</p>
+        <div class="card-wrap">
+          <div class="block-social">
+            <a class="social-chip" href="#" aria-label="Website">
+              <svg class="ic"><use href="#i-globe"/></svg>
+            </a>
+            <a class="social-chip" href="#" aria-label="Email">
+              <svg class="ic"><use href="#i-mail"/></svg>
+            </a>
+            <a class="social-chip" href="#" aria-label="Phone">
+              <svg class="ic"><use href="#i-phone"/></svg>
+            </a>
+            <a class="social-chip" href="#" aria-label="Share">
+              <svg class="ic"><use href="#i-share"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="block-item">
+        <p class="ds-label">Contact</p>
+        <div class="card-wrap">
+          <div class="block-contact">
+            <a class="contact-btn primary" href="#">
+              <svg class="ic"><use href="#i-phone"/></svg>
+              Call Alex
+            </a>
+            <a class="contact-btn secondary" href="#">
+              <svg class="ic"><use href="#i-mail"/></svg>
+              Send email
+            </a>
+            <a class="contact-btn ghost" href="#">
+              <svg class="ic"><use href="#i-download"/></svg>
+              Save contact
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="block-item">
+        <p class="ds-label">CTA</p>
+        <div class="card-wrap">
+          <div class="block-cta">
+            <a class="cta-btn" href="#">
+              <svg class="ic" style="width:18px;height:18px;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round"><use href="#i-external"/></svg>
+              View my work
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery -->
+      <div class="block-item">
+        <p class="ds-label">Gallery</p>
+        <div class="card-wrap">
+          <div class="block-gallery">
+            <div class="gallery-tile"></div>
+            <div class="gallery-tile"></div>
+            <div class="gallery-tile"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="block-item">
+        <p class="ds-label">Map</p>
+        <div class="card-wrap">
+          <div class="block-map">
+            <div class="map-placeholder">
+              <div class="map-pin">
+                <svg viewBox="0 0 24 24" fill="#5b5bd6" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                  <circle cx="12" cy="10" r="3" fill="#fff" stroke="#5b5bd6" stroke-width="1.5"/>
+                </svg>
+              </div>
+            </div>
+            <div class="map-address">
+              <svg class="ic"><use href="#i-map-pin"/></svg>
+              340 Pine Street, San Francisco, CA 94104
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="block-item">
+        <p class="ds-label">Divider</p>
+        <div class="card-wrap">
+          <div style="padding: 8px 0;">
+            <p style="font-size:13px;color:var(--fg-muted);margin:0 0 14px;">Content above</p>
+            <div class="block-divider"><hr></div>
+            <p style="font-size:13px;color:var(--fg-muted);margin:14px 0 0;">Content below</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spacer -->
+      <div class="block-item">
+        <p class="ds-label">Spacer</p>
+        <div class="card-wrap">
+          <div style="display:flex;flex-direction:column;gap:0;">
+            <p style="font-size:13px;color:var(--fg-muted);margin:0 0 8px;">Content above</p>
+            <div class="block-spacer">
+              <div class="spacer-gap"></div>
+              <span class="spacer-label">md — 24px gap</span>
+            </div>
+            <p style="font-size:13px;color:var(--fg-muted);margin:8px 0 0;">Content below</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

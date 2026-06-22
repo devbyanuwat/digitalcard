@@ -1,0 +1,684 @@
+<!-- @dsCard group="Builder Chrome" name="Theme Gallery" viewport="1200x900" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>digitalcard — Theme Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/preview.css">
+<style>
+  .i { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.75; fill: none; stroke-linecap: round; stroke-linejoin: round; display: block; flex: none; }
+  .i--sm { width: 14px; height: 14px; }
+
+  /* Filter row */
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+  .filter-pills {
+    display: flex;
+    gap: var(--space-2xs);
+    flex-wrap: wrap;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 var(--space-sm);
+    font-family: inherit;
+    font-size: var(--text-ui);
+    font-weight: var(--fw-medium);
+    color: var(--fg-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-standard),
+                border-color var(--dur-fast) var(--ease-standard),
+                color var(--dur-fast) var(--ease-standard);
+  }
+  .pill:hover { background: var(--surface-2); border-color: var(--border-strong); color: var(--fg); }
+  .pill[aria-pressed="true"] {
+    background: var(--accent-subtle);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .pill:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    max-width: 240px;
+  }
+  .search-wrap .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--fg-subtle);
+    pointer-events: none;
+  }
+  .search-wrap .input {
+    padding-left: 32px;
+    height: 30px;
+  }
+
+  /* Theme grid */
+  .theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-md);
+  }
+
+  /* Theme card */
+  .theme-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-standard),
+                box-shadow var(--dur-fast) var(--ease-standard);
+  }
+  .theme-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-sm); }
+  .theme-card--selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+  }
+  .theme-card--locked { opacity: 0.72; }
+
+  /* Thumbnail */
+  .thumb {
+    width: 100%;
+    height: 120px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Thumbnail styles — each theme gets a distinct mini card preview */
+  .thumb--minimal {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--minimal .t-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: oklch(0.918 0.006 278);
+    border: 1px solid oklch(0.865 0.009 278);
+  }
+  .thumb--minimal .t-bar { height: 5px; border-radius: 3px; background: oklch(0.205 0.020 278); }
+  .thumb--minimal .t-bar--sub { height: 4px; border-radius: 3px; background: oklch(0.680 0.018 278); }
+  .thumb--minimal .t-btn {
+    height: 14px; width: 64px; border-radius: 4px;
+    background: oklch(0.245 0.022 278); margin-top: 2px;
+  }
+
+  .thumb--bold {
+    background: oklch(0.205 0.020 278);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--bold .t-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: oklch(0.530 0.190 278);
+  }
+  .thumb--bold .t-bar { height: 5px; border-radius: 3px; background: oklch(0.962 0.004 278); }
+  .thumb--bold .t-bar--sub { height: 4px; border-radius: 3px; background: oklch(0.520 0.012 278); }
+  .thumb--bold .t-btn {
+    height: 14px; width: 64px; border-radius: 4px;
+    background: oklch(0.530 0.190 278); margin-top: 2px;
+  }
+
+  .thumb--gradient {
+    background: linear-gradient(135deg, oklch(0.62 0.16 278), oklch(0.72 0.12 320));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--gradient .t-avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: oklch(0.990 0.010 278 / 0.25);
+    border: 1.5px solid oklch(0.990 0.010 278 / 0.5);
+  }
+  .thumb--gradient .t-bar { height: 5px; border-radius: 3px; background: #fff; }
+  .thumb--gradient .t-bar--sub { height: 4px; border-radius: 3px; background: oklch(0.990 0.010 278 / 0.6); }
+  .thumb--gradient .t-btn {
+    height: 14px; width: 64px; border-radius: 4px;
+    background: oklch(0.990 0.010 278 / 0.25); margin-top: 2px;
+  }
+
+  .thumb--dark {
+    background: oklch(0.170 0.010 278);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--dark .t-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: oklch(0.300 0.014 278);
+    border: 1px solid oklch(0.380 0.016 278);
+  }
+  .thumb--dark .t-bar { height: 5px; border-radius: 3px; background: oklch(0.962 0.004 278); }
+  .thumb--dark .t-bar--sub { height: 4px; border-radius: 3px; background: oklch(0.520 0.012 278); }
+  .thumb--dark .t-btn {
+    height: 14px; width: 64px; border-radius: 4px;
+    background: oklch(0.650 0.170 278); margin-top: 2px;
+  }
+
+  .thumb--glass {
+    background: linear-gradient(160deg, oklch(0.72 0.08 210), oklch(0.62 0.10 260));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--glass .t-card-inner {
+    background: oklch(0.990 0.002 278 / 0.15);
+    border: 1px solid oklch(0.990 0.002 278 / 0.30);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+  }
+  .thumb--glass .t-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: oklch(0.990 0.010 278 / 0.35);
+    border: 1px solid oklch(0.990 0.010 278 / 0.5);
+  }
+  .thumb--glass .t-bar { height: 4px; border-radius: 3px; background: #fff; }
+  .thumb--glass .t-bar--sub { height: 3px; border-radius: 3px; background: oklch(0.990 0.010 278 / 0.65); }
+
+  .thumb--playful {
+    background: oklch(0.975 0.025 60);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--playful .t-avatar {
+    width: 30px; height: 30px; border-radius: 10px;
+    background: oklch(0.72 0.15 30);
+  }
+  .thumb--playful .t-bar { height: 5px; border-radius: 3px; background: oklch(0.205 0.020 278); width: 70px; }
+  .thumb--playful .t-bar--sub { height: 4px; border-radius: 3px; background: oklch(0.505 0.020 278); width: 50px; }
+  .thumb--playful .t-btn {
+    height: 14px; width: 60px; border-radius: 9999px;
+    background: oklch(0.72 0.15 30); margin-top: 2px;
+  }
+
+  .thumb--sans {
+    background: oklch(0.958 0.005 278);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--sans .t-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: oklch(0.865 0.009 278);
+    border: 1px solid oklch(0.805 0.012 278);
+  }
+  .thumb--sans .t-bar { height: 5px; border-radius: 3px; background: oklch(0.245 0.022 278); }
+  .thumb--sans .t-bar--sub { height: 4px; border-radius: 3px; background: oklch(0.505 0.020 278); }
+  .thumb--sans .t-btn {
+    height: 14px; width: 64px; border-radius: 4px;
+    background: oklch(0.300 0.014 278); margin-top: 2px;
+  }
+
+  .thumb--ink {
+    background: oklch(0.130 0.015 278);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--ink .t-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: oklch(0.245 0.022 278);
+    border: 1px solid oklch(0.380 0.016 278);
+  }
+  .thumb--ink .t-bar { height: 5px; border-radius: 3px; background: oklch(0.950 0.004 278); }
+  .thumb--ink .t-bar--sub { height: 4px; border-radius: 3px; background: oklch(0.520 0.012 278); }
+  .thumb--ink .t-btn {
+    height: 14px; width: 64px; border-radius: 4px;
+    background: oklch(0.950 0.004 278); margin-top: 2px;
+  }
+
+  .thumb--rose {
+    background: oklch(0.980 0.015 10);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--rose .t-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: oklch(0.72 0.15 10);
+  }
+  .thumb--rose .t-bar { height: 5px; border-radius: 3px; background: oklch(0.205 0.020 10); }
+  .thumb--rose .t-bar--sub { height: 4px; border-radius: 3px; background: oklch(0.505 0.015 10); }
+  .thumb--rose .t-btn {
+    height: 14px; width: 64px; border-radius: 9999px;
+    background: oklch(0.72 0.15 10); margin-top: 2px;
+  }
+
+  .thumb--aurora {
+    background: linear-gradient(160deg, oklch(0.20 0.015 278), oklch(0.25 0.015 278));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--aurora::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 60px;
+    background: linear-gradient(135deg, oklch(0.65 0.17 278 / 0.30), oklch(0.72 0.14 170 / 0.20));
+  }
+  .thumb--aurora .t-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: oklch(0.650 0.170 278);
+    position: relative; z-index: 1;
+  }
+  .thumb--aurora .t-bar { height: 5px; border-radius: 3px; background: oklch(0.962 0.004 278); position: relative; z-index: 1; }
+  .thumb--aurora .t-bar--sub { height: 4px; border-radius: 3px; background: oklch(0.520 0.012 278); position: relative; z-index: 1; }
+  .thumb--aurora .t-btn {
+    height: 14px; width: 64px; border-radius: 4px;
+    background: oklch(0.650 0.170 278); margin-top: 2px; position: relative; z-index: 1;
+  }
+
+  .thumb--forest {
+    background: oklch(0.250 0.045 145);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--forest .t-avatar {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: oklch(0.620 0.150 150);
+  }
+  .thumb--forest .t-bar { height: 5px; border-radius: 3px; background: oklch(0.962 0.004 150); }
+  .thumb--forest .t-bar--sub { height: 4px; border-radius: 3px; background: oklch(0.520 0.040 150); }
+  .thumb--forest .t-btn {
+    height: 14px; width: 64px; border-radius: 4px;
+    background: oklch(0.620 0.150 150); margin-top: 2px;
+  }
+
+  .thumb--paper {
+    background: oklch(0.972 0.008 75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .thumb--paper .t-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: oklch(0.875 0.030 75);
+    border: 1px solid oklch(0.820 0.020 75);
+  }
+  .thumb--paper .t-bar { height: 5px; border-radius: 3px; background: oklch(0.250 0.020 75); }
+  .thumb--paper .t-bar--sub { height: 4px; border-radius: 3px; background: oklch(0.520 0.020 75); }
+  .thumb--paper .t-btn {
+    height: 14px; width: 64px; border-radius: 4px;
+    background: oklch(0.250 0.020 75); margin-top: 2px;
+  }
+
+  /* Card meta row */
+  .theme-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-sm);
+    gap: var(--space-xs);
+  }
+  .theme-name {
+    font-size: var(--text-ui);
+    font-weight: var(--fw-medium);
+    color: var(--fg);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .theme-badges {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    flex-shrink: 0;
+  }
+
+  /* Lock overlay chip */
+  .lock-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    height: 18px;
+    padding: 0 6px;
+    font-size: 10px;
+    font-weight: var(--fw-medium);
+    color: var(--fg-subtle);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+  }
+  .lock-chip svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 1.75; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* OSS vs hosted note */
+  .tier-note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: var(--text-caption);
+    color: var(--fg-muted);
+    max-width: 600px;
+  }
+  .tier-note svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 1.75; fill: none; stroke-linecap: round; stroke-linejoin: round; flex: none; margin-top: 1px; }
+  .tier-note strong { color: var(--fg); font-weight: var(--fw-medium); }
+</style>
+</head>
+<body>
+
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+</defs></svg>
+
+<!-- Theme toggle -->
+<div class="ds-themeswitch">
+  <button class="icon-btn" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme==='dark'?'light':'dark'">
+    <svg class="i"><use href="#i-sun"/></svg>
+  </button>
+</div>
+
+<div class="ds-page">
+  <p class="ds-eyebrow">Builder Chrome</p>
+  <h1 class="ds-title">Theme Gallery</h1>
+  <p class="ds-lede">Browse and select a card theme. OSS themes ship with every build. Hosted themes are available on the hosted plan — same engine, same renderer, only the catalog differs.</p>
+
+  <div class="ds-section">
+    <div class="ds-section-head">
+      <h2>Theme Catalog</h2>
+      <span class="ds-meta">12 themes · 6 OSS · 6 hosted</span>
+    </div>
+
+    <!-- Filter row -->
+    <div class="filter-row" style="margin-bottom: var(--space-lg);">
+      <div class="filter-pills" role="group" aria-label="Filter by category">
+        <button class="pill" aria-pressed="true">All</button>
+        <button class="pill" aria-pressed="false">Minimal</button>
+        <button class="pill" aria-pressed="false">Bold</button>
+        <button class="pill" aria-pressed="false">Gradient</button>
+        <button class="pill" aria-pressed="false">Dark</button>
+        <button class="pill" aria-pressed="false">Glass</button>
+        <button class="pill" aria-pressed="false">Playful</button>
+      </div>
+      <div class="search-wrap">
+        <span class="search-icon">
+          <svg class="i i--sm"><use href="#i-search"/></svg>
+        </span>
+        <input type="search" class="input" placeholder="Search themes…" aria-label="Search themes">
+      </div>
+    </div>
+
+    <!-- Theme grid -->
+    <div class="theme-grid">
+
+      <!-- 1 — Minimal OSS, SELECTED -->
+      <div class="theme-card theme-card--selected" role="button" aria-pressed="true" tabindex="0">
+        <div class="thumb thumb--minimal">
+          <div class="t-avatar"></div>
+          <div class="t-bar" style="width:72px"></div>
+          <div class="t-bar--sub" style="width:52px"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Clean</span>
+          <div class="theme-badges">
+            <span class="badge badge--accent">Minimal</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 — Bold OSS -->
+      <div class="theme-card" role="button" tabindex="0">
+        <div class="thumb thumb--bold">
+          <div class="t-avatar"></div>
+          <div class="t-bar" style="width:68px"></div>
+          <div class="t-bar--sub" style="width:48px"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Obsidian</span>
+          <div class="theme-badges">
+            <span class="badge">Bold</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 — Gradient OSS -->
+      <div class="theme-card" role="button" tabindex="0">
+        <div class="thumb thumb--gradient">
+          <div class="t-avatar"></div>
+          <div class="t-bar" style="width:70px"></div>
+          <div class="t-bar--sub" style="width:50px"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Dusk</span>
+          <div class="theme-badges">
+            <span class="badge">Gradient</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 — Dark OSS -->
+      <div class="theme-card" role="button" tabindex="0">
+        <div class="thumb thumb--dark">
+          <div class="t-avatar"></div>
+          <div class="t-bar" style="width:68px"></div>
+          <div class="t-bar--sub" style="width:48px"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Midnight</span>
+          <div class="theme-badges">
+            <span class="badge">Dark</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 — Glass OSS -->
+      <div class="theme-card" role="button" tabindex="0">
+        <div class="thumb thumb--glass">
+          <div class="t-card-inner">
+            <div class="t-avatar"></div>
+            <div class="t-bar" style="width:64px"></div>
+            <div class="t-bar--sub" style="width:44px"></div>
+          </div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Frost</span>
+          <div class="theme-badges">
+            <span class="badge">Glass</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 — Playful OSS -->
+      <div class="theme-card" role="button" tabindex="0">
+        <div class="thumb thumb--playful">
+          <div class="t-avatar"></div>
+          <div class="t-bar"></div>
+          <div class="t-bar--sub"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Poppy</span>
+          <div class="theme-badges">
+            <span class="badge">Playful</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 — Sans hosted locked -->
+      <div class="theme-card theme-card--locked" role="button" aria-disabled="true" tabindex="0">
+        <div class="thumb thumb--sans">
+          <div class="t-avatar"></div>
+          <div class="t-bar" style="width:72px"></div>
+          <div class="t-bar--sub" style="width:52px"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Slate</span>
+          <div class="theme-badges">
+            <span class="badge">Minimal</span>
+            <span class="lock-chip"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Hosted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 — Ink hosted locked -->
+      <div class="theme-card theme-card--locked" role="button" aria-disabled="true" tabindex="0">
+        <div class="thumb thumb--ink">
+          <div class="t-avatar"></div>
+          <div class="t-bar" style="width:68px"></div>
+          <div class="t-bar--sub" style="width:48px"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Ink</span>
+          <div class="theme-badges">
+            <span class="badge">Bold</span>
+            <span class="lock-chip"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Hosted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 — Rose hosted locked -->
+      <div class="theme-card theme-card--locked" role="button" aria-disabled="true" tabindex="0">
+        <div class="thumb thumb--rose">
+          <div class="t-avatar"></div>
+          <div class="t-bar" style="width:70px"></div>
+          <div class="t-bar--sub" style="width:50px"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Rose</span>
+          <div class="theme-badges">
+            <span class="badge">Playful</span>
+            <span class="lock-chip"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Hosted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 — Aurora hosted locked -->
+      <div class="theme-card theme-card--locked" role="button" aria-disabled="true" tabindex="0">
+        <div class="thumb thumb--aurora">
+          <div class="t-avatar"></div>
+          <div class="t-bar" style="width:68px"></div>
+          <div class="t-bar--sub" style="width:48px"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Aurora</span>
+          <div class="theme-badges">
+            <span class="badge">Dark</span>
+            <span class="lock-chip"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Hosted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11 — Forest hosted locked -->
+      <div class="theme-card theme-card--locked" role="button" aria-disabled="true" tabindex="0">
+        <div class="thumb thumb--forest">
+          <div class="t-avatar"></div>
+          <div class="t-bar" style="width:68px"></div>
+          <div class="t-bar--sub" style="width:48px"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Forest</span>
+          <div class="theme-badges">
+            <span class="badge">Dark</span>
+            <span class="lock-chip"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Hosted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12 — Paper hosted locked -->
+      <div class="theme-card theme-card--locked" role="button" aria-disabled="true" tabindex="0">
+        <div class="thumb thumb--paper">
+          <div class="t-avatar"></div>
+          <div class="t-bar" style="width:70px"></div>
+          <div class="t-bar--sub" style="width:50px"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="theme-meta">
+          <span class="theme-name">Paper</span>
+          <div class="theme-badges">
+            <span class="badge">Minimal</span>
+            <span class="lock-chip"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Hosted</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tier note -->
+    <div class="tier-note" style="margin-top: var(--space-lg);">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+      <span><strong>OSS vs hosted — same engine.</strong> The <code style="font-family:var(--font-mono);font-size:11px">tier</code> field is the only difference. Self-hosted builds get the 6 base themes. Hosted plans include 30+ themes. One renderer reads both.</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

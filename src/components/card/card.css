@@ -1,0 +1,182 @@
+/* ==========================================================================
+   digitalcard — Card renderer primitives.
+   Every class reads the scoped --c-* theme variables set by themeToCssVars().
+   This is the EXPRESSIVE layer: independent of the builder chrome tokens.
+   Block components compose these classes; themes only change the variables.
+   ========================================================================== */
+
+.dc-card {
+  background: var(--c-bg);
+  border-radius: calc(var(--c-radius) + 6px);
+  padding: var(--c-frame);
+  width: 100%;
+  max-width: 380px;
+  box-shadow: var(--c-shadow);
+}
+
+.dc-card__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--c-gap);
+  padding: var(--c-pad);
+  background: var(--c-surface);
+  -webkit-backdrop-filter: blur(var(--c-blur));
+  backdrop-filter: blur(var(--c-blur));
+  border: var(--c-border-width) solid var(--c-border);
+  border-radius: var(--c-radius);
+  color: var(--c-text);
+  font-family: var(--c-font);
+  font-weight: var(--c-weight-body);
+  text-align: center;
+}
+.dc-card[data-align="left"] .dc-card__inner {
+  text-align: left;
+  align-items: stretch;
+}
+
+/* --- Header ------------------------------------------------------------- */
+.dc-avatar {
+  width: calc(76px * var(--c-scale));
+  height: calc(76px * var(--c-scale));
+  border-radius: var(--c-avatar-radius);
+  object-fit: cover;
+  display: grid;
+  place-items: center;
+  background: var(--c-accent);
+  color: var(--c-accent-text);
+  font-family: var(--c-font-heading);
+  font-weight: 600;
+  font-size: calc(26px * var(--c-scale));
+  line-height: 1;
+}
+.dc-card:not([data-align="left"]) .dc-avatar { margin-inline: auto; }
+
+.dc-name {
+  font-family: var(--c-font-heading);
+  font-weight: var(--c-weight-heading);
+  font-size: calc(21px * var(--c-scale));
+  letter-spacing: -0.01em;
+  line-height: 1.18;
+  margin: 0;
+}
+.dc-role { color: var(--c-muted); font-size: calc(14px * var(--c-scale)); margin: 0; }
+.dc-company { font-weight: 500; font-size: calc(14px * var(--c-scale)); margin: 0; }
+.dc-tagline { color: var(--c-muted); font-size: calc(13px * var(--c-scale)); margin: 0; }
+.dc-header-group { display: flex; flex-direction: column; gap: calc(2px * var(--c-scale)); }
+
+/* --- Text --------------------------------------------------------------- */
+.dc-bio {
+  color: var(--c-muted);
+  font-size: calc(14px * var(--c-scale));
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+.dc-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--c-radius);
+  font-family: var(--c-font);
+  font-size: calc(14px * var(--c-scale));
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.dc-btn--solid { background: var(--c-accent); color: var(--c-accent-text); }
+.dc-btn--soft {
+  background: color-mix(in oklab, var(--c-accent) 16%, transparent);
+  color: var(--c-accent);
+}
+.dc-btn--outline { background: transparent; color: var(--c-text); border-color: var(--c-border); }
+.dc-btn--ghost { background: transparent; color: var(--c-text); }
+
+.dc-actions { display: flex; flex-direction: column; gap: 8px; }
+
+/* --- Links (link-in-bio) ----------------------------------------------- */
+.dc-links { display: flex; flex-direction: column; gap: 8px; }
+.dc-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border-radius: var(--c-radius);
+  border: 1px solid var(--c-border);
+  background: color-mix(in oklab, var(--c-text) 3%, transparent);
+  color: var(--c-text);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: calc(14px * var(--c-scale));
+}
+.dc-link__label { flex: 1; text-align: left; }
+
+/* --- Social ------------------------------------------------------------- */
+.dc-social { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.dc-card[data-align="left"] .dc-social { justify-content: flex-start; }
+.dc-social a {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: calc(var(--c-radius) - 2px);
+  color: var(--c-text);
+  background: color-mix(in oklab, var(--c-text) 7%, transparent);
+  border: 1px solid var(--c-border);
+}
+
+/* --- Gallery ------------------------------------------------------------ */
+.dc-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.dc-gallery__tile {
+  aspect-ratio: 1;
+  border-radius: calc(var(--c-radius) - 2px);
+  background: color-mix(in oklab, var(--c-accent) 18%, var(--c-surface));
+  background-size: cover;
+  background-position: center;
+}
+
+/* --- Map ---------------------------------------------------------------- */
+.dc-map {
+  position: relative;
+  height: 150px;
+  border-radius: var(--c-radius);
+  border: 1px solid var(--c-border);
+  overflow: hidden;
+  background-color: color-mix(in oklab, var(--c-accent) 8%, var(--c-surface));
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--c-text) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--c-text) 8%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.dc-map__pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  color: var(--c-accent);
+}
+.dc-address {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-muted);
+  font-size: calc(13px * var(--c-scale));
+}
+.dc-card[data-align="left"] .dc-address { justify-content: flex-start; }
+
+/* --- Misc --------------------------------------------------------------- */
+.dc-divider { height: 1px; background: var(--c-border); border: 0; width: 100%; }
+.dc-foot { font-size: calc(11px * var(--c-scale)); color: var(--c-muted); opacity: 0.85; }
+.dc-ic { width: 18px; height: 18px; flex: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dc-card * { transition: none !important; }
+}

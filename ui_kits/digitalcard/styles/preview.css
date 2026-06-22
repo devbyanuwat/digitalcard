@@ -1,0 +1,232 @@
+/* ==========================================================================
+   digitalcard — Preview / showcase layer + shared chrome primitives
+   Consumed by every preview in ui_kits/digitalcard/**. Depends on tokens.css.
+   Keeps all previews visually consistent (one button, one input, etc.).
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--lh-normal);
+  color: var(--fg);
+  background: var(--bg);
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="dark"] body { font-weight: 350; }   /* lighter on dark */
+
+::selection { background: var(--accent-subtle); color: var(--fg); }
+
+a { color: inherit; }
+
+/* --- Showcase scaffolding ------------------------------------------------ */
+.ds-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-xl) var(--space-4xl);
+}
+.ds-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 var(--space-xs);
+}
+.ds-title {
+  font-size: var(--text-display);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-sm);
+}
+.ds-lede {
+  font-size: var(--text-base);
+  color: var(--fg-muted);
+  max-width: 66ch;
+  margin: 0 0 var(--space-2xl);
+}
+.ds-section { margin-top: var(--space-3xl); }
+.ds-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border);
+}
+.ds-section-head h2 {
+  font-size: var(--text-h2);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-snug);
+  margin: 0;
+}
+.ds-section-head .ds-meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--fg-subtle);
+}
+.ds-label {
+  font-size: var(--text-caption);
+  font-weight: var(--fw-medium);
+  color: var(--fg-muted);
+  margin: 0 0 var(--space-xs);
+}
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-md);
+}
+.ds-stage {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: var(--space-2xl);
+}
+.ds-stage--inset { background: var(--surface-2); }
+
+/* --- Buttons ------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  height: 32px;
+  padding: 0 var(--space-sm);
+  font-family: inherit;
+  font-size: var(--text-ui);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard),
+              color var(--dur-fast) var(--ease-standard);
+}
+.btn:hover { background: var(--surface-2); border-color: var(--border-strong); }
+.btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.btn--primary {
+  color: var(--primary-fg); background: var(--primary); border-color: transparent;
+}
+.btn--primary:hover { background: var(--primary-hover); }
+.btn--accent {
+  color: var(--accent-fg); background: var(--accent); border-color: transparent;
+}
+.btn--accent:hover { background: var(--accent-hover); }
+.btn--ghost { background: transparent; border-color: transparent; color: var(--fg-muted); }
+.btn--ghost:hover { background: var(--surface-2); color: var(--fg); }
+.btn--sm { height: 26px; padding: 0 var(--space-xs); font-size: var(--text-caption); }
+.btn--lg { height: 40px; padding: 0 var(--space-md); font-size: var(--text-sm); }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; padding: 0;
+  color: var(--fg-muted); background: transparent;
+  border: 1px solid transparent; border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
+}
+.icon-btn:hover { background: var(--surface-2); color: var(--fg); }
+.icon-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+/* --- Inputs -------------------------------------------------------------- */
+.field { display: flex; flex-direction: column; gap: var(--space-2xs); }
+.input, .select, .textarea {
+  width: 100%;
+  height: 34px;
+  padding: 0 var(--space-sm);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--dur-fast) var(--ease-standard),
+              box-shadow var(--dur-fast) var(--ease-standard);
+}
+.textarea { height: auto; padding: var(--space-xs) var(--space-sm); resize: vertical; min-height: 72px; line-height: var(--lh-normal); }
+.input::placeholder, .textarea::placeholder { color: var(--fg-subtle); }
+.input:focus, .select:focus, .textarea:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+.input--mono { font-family: var(--font-mono); font-size: var(--text-ui); }
+.field__hint { font-size: var(--text-caption); color: var(--fg-subtle); }
+
+/* --- Segmented control --------------------------------------------------- */
+.segmented {
+  display: inline-flex;
+  padding: 2px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  gap: 2px;
+}
+.segmented button {
+  appearance: none; border: 0; cursor: pointer;
+  font-family: inherit; font-size: var(--text-ui); font-weight: var(--fw-medium);
+  color: var(--fg-muted); background: transparent;
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: calc(var(--radius-md) - 2px);
+  transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
+}
+.segmented button[aria-pressed="true"] {
+  color: var(--fg); background: var(--surface); box-shadow: var(--shadow-xs);
+}
+
+/* --- Toggle -------------------------------------------------------------- */
+.toggle {
+  position: relative; width: 36px; height: 20px;
+  background: var(--border-strong); border-radius: var(--radius-full);
+  cursor: pointer; transition: background var(--dur-base) var(--ease-standard); flex: none;
+}
+.toggle::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; background: var(--surface); border-radius: 50%;
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.toggle[aria-checked="true"] { background: var(--accent); }
+.toggle[aria-checked="true"]::after { transform: translateX(16px); }
+
+/* --- Badges & pills ------------------------------------------------------ */
+.badge {
+  display: inline-flex; align-items: center; gap: var(--space-2xs);
+  height: 20px; padding: 0 var(--space-xs);
+  font-size: var(--text-caption); font-weight: var(--fw-medium);
+  color: var(--fg-muted); background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: var(--radius-full);
+}
+.badge--accent { color: var(--accent); background: var(--accent-subtle); border-color: transparent; }
+.badge--lock { color: var(--fg-muted); }
+
+/* --- Misc ---------------------------------------------------------------- */
+.kbd {
+  font-family: var(--font-mono); font-size: 0.6875rem;
+  padding: 1px 5px; color: var(--fg-muted);
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.divider { height: 1px; background: var(--border); border: 0; margin: var(--space-md) 0; }
+.muted { color: var(--fg-muted); }
+.subtle { color: var(--fg-subtle); }
+.mono { font-family: var(--font-mono); }
+.tabnum { font-variant-numeric: tabular-nums; }
+
+/* Theme switch affordance shown on previews (top-right) */
+.ds-themeswitch {
+  position: fixed; top: var(--space-md); right: var(--space-md);
+  z-index: var(--z-toast);
+}

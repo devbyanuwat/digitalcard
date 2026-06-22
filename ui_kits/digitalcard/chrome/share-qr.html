@@ -1,0 +1,444 @@
+<!-- @dsCard group="Builder Chrome" name="Share & QR" viewport="900x800" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>digitalcard — Share &amp; QR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/preview.css">
+<style>
+  .i { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.75; fill: none; stroke-linecap: round; stroke-linejoin: round; display: block; flex: none; }
+  .i--sm { width: 14px; height: 14px; }
+
+  /* Backdrop */
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    background: oklch(0 0 0 / 0.45);
+    display: grid;
+    place-items: center;
+    padding: var(--space-lg);
+    z-index: var(--z-overlay);
+  }
+
+  /* Dialog panel */
+  .dialog {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+  }
+
+  .dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--border);
+  }
+  .dialog-header h2 {
+    font-size: var(--text-h3);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--tracking-snug);
+    margin: 0;
+  }
+
+  .dialog-body {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  /* QR zone */
+  .qr-zone {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-md) 0;
+  }
+  .qr-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .qr-logo-chip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-weight: var(--fw-bold);
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+
+  /* Options area */
+  .option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+  .option-row .ds-label { margin: 0; }
+
+  .range-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex: 1;
+  }
+  .range-wrap input[type="range"] {
+    flex: 1;
+    height: 4px;
+    appearance: none;
+    background: var(--border-strong);
+    border-radius: var(--radius-full);
+    outline: none;
+    cursor: pointer;
+  }
+  .range-wrap input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--surface);
+    box-shadow: 0 0 0 1px var(--accent);
+    cursor: pointer;
+  }
+  .range-wrap input[type="range"]::-moz-range-thumb {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--surface);
+    box-shadow: 0 0 0 1px var(--accent);
+    cursor: pointer;
+  }
+  .range-value {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--fg-muted);
+    min-width: 32px;
+    text-align: right;
+  }
+
+  /* Color swatch mini-row */
+  .color-swatch-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+  .color-swatch-sm {
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    flex: none;
+    transition: transform var(--dur-fast) var(--ease-standard);
+  }
+  .color-swatch-sm:hover { transform: scale(1.15); }
+  .color-swatch-sm--selected {
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--accent);
+  }
+
+  /* Share link row */
+  .share-link-row {
+    display: flex;
+    gap: var(--space-xs);
+  }
+  .share-link-row .input {
+    flex: 1;
+    min-width: 0;
+    height: 34px;
+  }
+  .share-link-row .btn {
+    flex: none;
+  }
+
+  /* Dialog footer */
+  .dialog-footer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-md) var(--space-lg);
+    border-top: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  .dialog-footer .spacer { flex: 1; }
+
+  /* The ds-page content sits behind/around the dialog for the preview page */
+  body { min-height: 100vh; }
+
+  /* Showcase: place the dialog inline in a ds-stage */
+  .dialog-demo-wrap {
+    position: relative;
+    min-height: 640px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface-2);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .demo-backdrop {
+    position: absolute;
+    inset: 0;
+    background: oklch(0 0 0 / 0.45);
+    display: grid;
+    place-items: center;
+    padding: var(--space-lg);
+  }
+</style>
+</head>
+<body>
+
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 21h14"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></symbol>
+</defs></svg>
+
+<!-- Theme toggle -->
+<div class="ds-themeswitch">
+  <button class="icon-btn" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme==='dark'?'light':'dark'">
+    <svg class="i"><use href="#i-sun"/></svg>
+  </button>
+</div>
+
+<div class="ds-page">
+  <p class="ds-eyebrow">Builder Chrome</p>
+  <h1 class="ds-title">Share &amp; QR</h1>
+  <p class="ds-lede">The Share dialog gives the user a faux-QR preview, download options (PNG / SVG), and a copy-link input. Size and color are configurable without leaving the dialog.</p>
+
+  <div class="ds-section">
+    <div class="ds-section-head">
+      <h2>Share Dialog</h2>
+      <span class="ds-meta">max-width 420px · surface · shadow-lg</span>
+    </div>
+
+    <!-- Demo wrap with backdrop -->
+    <div class="dialog-demo-wrap">
+      <div class="demo-backdrop" aria-hidden="true"></div>
+
+      <!-- Dialog -->
+      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" style="position:relative;z-index:1;">
+
+        <!-- Header -->
+        <div class="dialog-header">
+          <h2 id="dialog-title">Share card</h2>
+          <button class="icon-btn" aria-label="Close dialog">
+            <svg class="i"><use href="#i-x"/></svg>
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="dialog-body">
+
+          <!-- QR preview -->
+          <div class="qr-zone">
+            <div class="qr-wrap">
+              <!-- Faux QR: 180x180 SVG. 3 finder squares + data modules. -->
+              <svg width="180" height="180" viewBox="0 0 180 180" aria-label="QR code preview" role="img" style="display:block;">
+                <!-- Background -->
+                <rect width="180" height="180" fill="var(--surface)" rx="4"/>
+
+                <!-- Quiet zone / border hint -->
+                <rect x="6" y="6" width="168" height="168" fill="none" stroke="var(--border)" stroke-width="0.5" rx="2"/>
+
+                <!-- === Finder square top-left === -->
+                <rect x="14" y="14" width="42" height="42" rx="4" fill="var(--fg)"/>
+                <rect x="20" y="20" width="30" height="30" rx="2" fill="var(--surface)"/>
+                <rect x="26" y="26" width="18" height="18" rx="1.5" fill="var(--fg)"/>
+
+                <!-- === Finder square top-right === -->
+                <rect x="124" y="14" width="42" height="42" rx="4" fill="var(--fg)"/>
+                <rect x="130" y="20" width="30" height="30" rx="2" fill="var(--surface)"/>
+                <rect x="136" y="26" width="18" height="18" rx="1.5" fill="var(--fg)"/>
+
+                <!-- === Finder square bottom-left === -->
+                <rect x="14" y="124" width="42" height="42" rx="4" fill="var(--fg)"/>
+                <rect x="20" y="130" width="30" height="30" rx="2" fill="var(--surface)"/>
+                <rect x="26" y="136" width="18" height="18" rx="1.5" fill="var(--fg)"/>
+
+                <!-- === Timing patterns (horizontal) === -->
+                <rect x="62" y="60" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="74" y="60" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="86" y="60" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="62" y="72" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="86" y="72" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="74" y="84" width="6" height="6" rx="1" fill="var(--fg)"/>
+
+                <!-- === Data modules — scattered believable pattern === -->
+                <!-- Row band 1 (y~62) -->
+                <rect x="62" y="16" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="74" y="16" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="86" y="22" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="98" y="16" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="110" y="16" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="62" y="28" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="74" y="34" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="98" y="28" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="110" y="34" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="86" y="40" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="62" y="46" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="98" y="46" width="6" height="6" rx="1" fill="var(--fg)"/>
+
+                <!-- Row band left (x~16) -->
+                <rect x="16" y="62" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="28" y="74" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="16" y="80" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="40" y="68" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="16" y="92" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="34" y="98" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="16" y="110" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="28" y="116" width="6" height="6" rx="1" fill="var(--fg)"/>
+
+                <!-- Central data area (skipping logo zone ~76-104 x 76-104) -->
+                <rect x="62" y="98" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="110" y="68" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="116" y="80" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="104" y="92" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="110" y="104" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="116" y="116" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="62" y="110" width="6" height="6" rx="1" fill="var(--fg)"/>
+
+                <!-- Lower band -->
+                <rect x="62" y="124" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="74" y="130" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="86" y="124" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="98" y="136" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="110" y="124" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="122" y="130" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="62" y="142" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="80" y="148" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="98" y="148" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="116" y="148" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="128" y="142" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="74" y="160" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="86" y="160" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="104" y="160" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="122" y="160" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="134" y="154" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="140" y="136" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="152" y="148" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="158" y="160" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="140" y="68" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="152" y="74" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="158" y="86" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="148" y="98" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="158" y="110" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="140" y="118" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="16" y="136" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="28" y="148" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="40" y="142" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="16" y="158" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="34" y="160" width="6" height="6" rx="1" fill="var(--fg)"/>
+                <rect x="50" y="154" width="6" height="6" rx="1" fill="var(--fg)"/>
+              </svg>
+
+              <!-- Logo chip centered -->
+              <div class="qr-logo-chip" aria-hidden="true">d</div>
+            </div>
+          </div>
+
+          <!-- Size slider -->
+          <div class="option-row">
+            <span class="ds-label">Size</span>
+            <div class="range-wrap">
+              <input type="range" min="120" max="400" value="180" aria-label="QR size" aria-valuetext="180px"
+                oninput="this.parentElement.querySelector('.range-value').textContent = this.value + 'px'">
+              <span class="range-value">180px</span>
+            </div>
+          </div>
+
+          <!-- Quiet zone toggle -->
+          <div class="option-row">
+            <span class="ds-label">Quiet zone / margin</span>
+            <span class="toggle" aria-checked="true" role="switch" tabindex="0" aria-label="Quiet zone margin"></span>
+          </div>
+
+          <!-- Foreground color -->
+          <div class="option-row">
+            <span class="ds-label">Foreground</span>
+            <div class="color-swatch-row">
+              <button class="color-swatch-sm color-swatch-sm--selected" style="background: oklch(0.205 0.020 278); border-color: transparent;" aria-label="Near black (selected)" aria-pressed="true"></button>
+              <button class="color-swatch-sm" style="background: oklch(0.530 0.190 278); border-color: transparent;" aria-label="Indigo" aria-pressed="false"></button>
+              <button class="color-swatch-sm" style="background: oklch(0.250 0.045 145); border-color: transparent;" aria-label="Forest green" aria-pressed="false"></button>
+              <button class="color-swatch-sm" style="background: oklch(0.250 0.020 27); border-color: transparent;" aria-label="Dark red" aria-pressed="false"></button>
+            </div>
+          </div>
+
+          <!-- Background color -->
+          <div class="option-row">
+            <span class="ds-label">Background</span>
+            <div class="color-swatch-row">
+              <button class="color-swatch-sm color-swatch-sm--selected" style="background: #ffffff; border-color: var(--border);" aria-label="White (selected)" aria-pressed="true"></button>
+              <button class="color-swatch-sm" style="background: oklch(0.975 0.004 278); border-color: var(--border);" aria-label="Warm white" aria-pressed="false"></button>
+              <button class="color-swatch-sm" style="background: oklch(0.170 0.010 278); border-color: transparent;" aria-label="Near black" aria-pressed="false"></button>
+              <button class="color-swatch-sm" style="background: oklch(0.952 0.030 278); border-color: var(--border);" aria-label="Accent tint" aria-pressed="false"></button>
+            </div>
+          </div>
+
+          <!-- Logo in center toggle -->
+          <div class="option-row">
+            <span class="ds-label">Logo in center</span>
+            <span class="toggle" aria-checked="true" role="switch" tabindex="0" aria-label="Show logo in center"></span>
+          </div>
+
+          <hr class="divider" style="margin: 0">
+
+          <!-- Share link -->
+          <div>
+            <div class="ds-label">Share link</div>
+            <div class="share-link-row">
+              <input class="input input--mono" type="url" value="https://digitalcard.app/c/alex" readonly aria-label="Card share link">
+              <button class="btn">
+                <svg class="i i--sm"><use href="#i-copy"/></svg>
+                Copy
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="dialog-footer">
+          <button class="btn btn--primary">
+            <svg class="i i--sm"><use href="#i-download"/></svg>
+            Download PNG
+          </button>
+          <button class="btn">
+            <svg class="i i--sm"><use href="#i-download"/></svg>
+            Download SVG
+          </button>
+          <div class="spacer"></div>
+          <button class="btn btn--ghost">
+            <svg class="i i--sm"><use href="#i-share"/></svg>
+            Copy link
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

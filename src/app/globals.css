@@ -1,0 +1,183 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ==========================================================================
+   digitalcard — Builder Chrome tokens (Minimal Swiss / Linear-Vercel).
+   Authored in OKLCH. Neutrals tinted ~0.004-0.014 chroma toward brand hue 278.
+   shadcn semantic tokens keep their conventional meaning:
+     --primary  = main dark action button
+     --accent   = neutral hover surface (NOT the brand color)
+     --ring     = focus ring = brand indigo
+   Brand indigo lives in its own --brand-* tokens (use bg-brand for CTAs).
+   Card themes carry separate --c-* tokens (see lib/card) and are untouched here.
+   ========================================================================== */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* digitalcard extensions */
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-subtle: var(--brand-subtle);
+  --color-surface-2: var(--surface-2);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-geist-sans);
+
+  --radius-sm: calc(var(--radius) * 0.75);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) * 1.5);
+  --radius-xl: calc(var(--radius) * 2);
+  --radius-2xl: calc(var(--radius) * 2.5);
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  --radius: 0.5rem; /* 8px base */
+
+  --background: oklch(0.975 0.004 278);
+  --foreground: oklch(0.205 0.020 278);
+  --card: oklch(0.995 0.002 278);
+  --card-foreground: oklch(0.205 0.020 278);
+  --popover: oklch(0.995 0.002 278);
+  --popover-foreground: oklch(0.205 0.020 278);
+
+  --primary: oklch(0.245 0.022 278);
+  --primary-foreground: oklch(0.990 0.002 278);
+  --secondary: oklch(0.958 0.005 278);
+  --secondary-foreground: oklch(0.245 0.022 278);
+  --muted: oklch(0.958 0.005 278);
+  --muted-foreground: oklch(0.505 0.020 278);
+  --accent: oklch(0.958 0.005 278);
+  --accent-foreground: oklch(0.245 0.022 278);
+
+  --destructive: oklch(0.580 0.205 27);
+  --destructive-foreground: oklch(0.990 0.005 27);
+  --border: oklch(0.918 0.006 278);
+  --input: oklch(0.918 0.006 278);
+  --ring: oklch(0.530 0.190 278);
+
+  /* brand indigo */
+  --brand: oklch(0.530 0.190 278);
+  --brand-foreground: oklch(0.990 0.010 278);
+  --brand-hover: oklch(0.480 0.190 278);
+  --brand-subtle: oklch(0.952 0.030 278);
+
+  /* extras */
+  --surface-2: oklch(0.958 0.005 278);
+  --fg-subtle: oklch(0.680 0.018 278);
+  --border-strong: oklch(0.865 0.009 278);
+  --success: oklch(0.620 0.150 150);
+  --warning: oklch(0.720 0.150 70);
+
+  --sidebar: oklch(0.985 0.003 278);
+  --sidebar-foreground: oklch(0.205 0.020 278);
+  --sidebar-primary: oklch(0.245 0.022 278);
+  --sidebar-primary-foreground: oklch(0.990 0.002 278);
+  --sidebar-accent: oklch(0.958 0.005 278);
+  --sidebar-accent-foreground: oklch(0.245 0.022 278);
+  --sidebar-border: oklch(0.918 0.006 278);
+  --sidebar-ring: oklch(0.530 0.190 278);
+}
+
+.dark {
+  --background: oklch(0.170 0.010 278);
+  --foreground: oklch(0.962 0.004 278);
+  --card: oklch(0.210 0.012 278);
+  --card-foreground: oklch(0.962 0.004 278);
+  --popover: oklch(0.210 0.012 278);
+  --popover-foreground: oklch(0.962 0.004 278);
+
+  --primary: oklch(0.962 0.004 278);
+  --primary-foreground: oklch(0.205 0.020 278);
+  --secondary: oklch(0.262 0.014 278);
+  --secondary-foreground: oklch(0.962 0.004 278);
+  --muted: oklch(0.262 0.014 278);
+  --muted-foreground: oklch(0.705 0.012 278);
+  --accent: oklch(0.262 0.014 278);
+  --accent-foreground: oklch(0.962 0.004 278);
+
+  --destructive: oklch(0.700 0.190 22);
+  --destructive-foreground: oklch(0.980 0.010 22);
+  --border: oklch(0.300 0.014 278);
+  --input: oklch(0.300 0.014 278);
+  --ring: oklch(0.650 0.170 278);
+
+  --brand: oklch(0.650 0.170 278);
+  --brand-foreground: oklch(0.160 0.020 278);
+  --brand-hover: oklch(0.700 0.165 278);
+  --brand-subtle: oklch(0.300 0.060 278);
+
+  --surface-2: oklch(0.262 0.014 278);
+  --fg-subtle: oklch(0.520 0.012 278);
+  --border-strong: oklch(0.380 0.016 278);
+  --success: oklch(0.650 0.140 150);
+  --warning: oklch(0.750 0.140 70);
+
+  --sidebar: oklch(0.210 0.012 278);
+  --sidebar-foreground: oklch(0.962 0.004 278);
+  --sidebar-primary: oklch(0.962 0.004 278);
+  --sidebar-primary-foreground: oklch(0.205 0.020 278);
+  --sidebar-accent: oklch(0.262 0.014 278);
+  --sidebar-accent-foreground: oklch(0.962 0.004 278);
+  --sidebar-border: oklch(0.300 0.014 278);
+  --sidebar-ring: oklch(0.650 0.170 278);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: normal;
+    -webkit-font-smoothing: antialiased;
+  }
+  .dark body {
+    font-weight: 350;
+  }
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  html {
+    @apply font-sans;
+  }
+}
