@@ -8,6 +8,7 @@ import { sampleCard } from "@/lib/card/sample";
 import { site, socialProfiles } from "@/lib/site";
 import { getUser } from "@/lib/auth";
 import { ThemeCycler } from "@/components/ThemeCycler";
+import { InteractiveGrid } from "@/components/InteractiveGrid";
 
 /* ---------------------------------------------------------------- content */
 
@@ -193,8 +194,9 @@ export default async function Home() {
 
         <main>
           {/* ---- hero ---- */}
-          <section className="border-b border-border">
-            <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-[1.05fr_1fr] lg:py-28">
+          <section className="relative isolate overflow-hidden border-b border-border">
+            <InteractiveGrid />
+            <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-[1.05fr_1fr] lg:py-28">
               <div>
                 <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 font-mono text-xs uppercase tracking-wider text-muted-foreground">
                   <span className="size-1.5 rounded-full bg-brand" aria-hidden="true" />
